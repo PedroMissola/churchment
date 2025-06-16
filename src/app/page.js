@@ -19,7 +19,7 @@ export default function Home() {
           </div>
           <Button size="xl">COMECE GRÁTIS</Button>
         </div>
-        <Image alt="" src="/Mockup.jpg" width="1420" height="1032"/>
+        <Image alt="" src="/Mockups.png" width="1420" height="1032"/>
       </main>
     </>
   );
