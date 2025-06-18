@@ -1,6 +1,13 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    allowedDevOrigins: ['cloudworkstations.dev', '*.cloudworkstations.dev'],
+    images: {
+        domains: ['images.unsplash.com'],
+      },
+      // Configuração corrigida para workstations:
+      allowedDevOrigins: [
+        'https://*.cloudworkstations.dev',
+        'https://*.cluster-*.cloudworkstations.dev'
+      ]
 };
 
 export default nextConfig;

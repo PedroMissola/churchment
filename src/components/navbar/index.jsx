@@ -62,13 +62,12 @@ export default function NavbarDemo() {
   }, []);
 
   return (
-    <Navbar className="mx-auto w-full max-w-screen-xl border-transparent shadow-none px-18 py-4">
+    <Navbar className="mx-auto w-full max-w-screen-xl border-transparent shadow-none px-9 md:px-18 py-4">
       <div className="flex justify-between items-center">
         <Typography
           as="a"
           href="#"
-          type="small"
-          className="ml-2 mr-2 block py-1 font-semibold"
+          className="text-lg ml-2 mr-2 block py-1 font-semibold"
         >
           Churchment
         </Typography>
