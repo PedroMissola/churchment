@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@material-tailwind/react": "^3.0.0-beta.24",
+    "@supabase/ssr": "^0.6.1",
     "@vercel/speed-insights": "^1.2.0",
     "autoprefixer": "^10.4.21",
     "firebase-admin": "^13.4.0",
