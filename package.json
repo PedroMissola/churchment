@@ -13,7 +13,11 @@
     "@material-tailwind/react": "^3.0.0-beta.24",
     "autoprefixer": "^10.4.21",
     "firebase-admin": "^13.4.0",
+<<<<<<< HEAD
     "framer-motion": "^12.20.1",
+=======
+    "framer-motion": "^12.18.1",
+>>>>>>> b5ff44ccfb5e132c0bf6900c6e5e22f98d9e9393
     "google-libphonenumber": "^3.2.41",
     "iconoir-react": "^7.11.0",
     "next": "15.3.2",
