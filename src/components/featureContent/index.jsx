@@ -1,0 +1,76 @@
+import { Button, Typography } from "@material-tailwind/react";
+import Image from "next/image";
+
+export default function FeatureCard({
+    direction = "left", // 'left' ou 'right'
+    title,
+    description,
+    buttonText = "SAIBA MAIS",
+    imageUrl,
+    altText,
+    feature_one,
+    feature_two,
+    feature_three
+}) {
+    const isReversed = direction === "right";
+
+    return (
+        <div className={`flex flex-col ${isReversed ? "md:flex-row-reverse" : "md:flex-row"} gap-4 md:gap-16 py-6 md:py-24 items-center`}>
+            <div className="w-full md:w-1/2">
+                <Image
+                    src={imageUrl}
+                    alt={altText}
+                    className="w-full h-auto rounded-lg object-cover"
+                    width={600}
+                    height={400}
+                />
+            </div>
+
+            <div className={`w-full md:w-1/2 flex flex-col gap-4 md:gap-8 ${isReversed ? "md:items-end" : ""}`}>
+                {/* Título: 24px em mobile, tamanho original em desktop */}
+                <Typography variant="h3" className={`text-2xl md:text-4xl font-semibold ${isReversed ? "md:text-right" : ""}`} color="primary">
+                    {title}
+                </Typography>
+
+                {/* Descrição: 14px em mobile, tamanho original em desktop */}
+                <Typography className={`text-sm md:text-xl ${isReversed ? "md:text-right" : ""}`} color="primary-light">
+                    {description}
+                </Typography>
+
+                {/* Features: 12px em mobile, tamanho original em desktop */}
+                <div className={`flex flex-col md:flex-row gap-2 md:gap-8 ${isReversed ? "md:justify-end" : ""}`}>
+                    {feature_one && (
+                        <Typography
+                            className={`text-xs md:text-sm ${isReversed ? "md:text-right" : ""}`}
+                            color="secondary"
+                        >
+                            {feature_one}
+                        </Typography>
+                    )}
+
+                    {feature_two && (
+                        <Typography
+                            className={`text-xs md:text-sm ${isReversed ? "md:text-right" : ""}`}
+                            color="secondary"
+                        >
+                            {feature_two}
+                        </Typography>
+                    )}
+
+                    {feature_three && (
+                        <Typography
+                            className={`text-xs md:text-sm ${isReversed ? "md:text-right" : ""}`}
+                            color="secondary"
+                        >
+                            {feature_three}
+                        </Typography>
+                    )}
+                </div>
+
+                <Button className={`w-fit ${isReversed ? "self-end" : ""} uppercase`} size="xl">
+                    {buttonText}
+                </Button>
+            </div>
+        </div>
+    );
+}
