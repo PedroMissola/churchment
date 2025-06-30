@@ -59,17 +59,67 @@ export default async function Home() {
 			</AnimatedSection>
 
 			<main className="w-full px-18">
+				<AnimatedSection delay={0.1}>
+					<FeatureCard
+						direction="left"
+						imageUrl="https://images.unsplash.com/photo-1682407186023-12c70a4a35e0?ixlib=rb-4.0.3&auto=format&fit=crop&w=2832&q=80"
+						altText="Gestão de eventos e escalas de igreja"
+						title="Gestão de eventos e escalas sem complicação"
+						description="Agende cultos, reuniões e eventos facilmente. Crie escalas de voluntários e mantenha tudo organizado em um só lugar."
+						buttonText="GERENCIE SEUS EVENTOS"
+						feature_one="Notificações automaticas"
+						feature_two="Escalas visiveis para todos"
+						feature_three="Menos desencontros"
+					/>
+				</AnimatedSection>
+
 				<AnimatedSection delay={0.2}>
-					<div className="h-32 w-full bg-gray-100 rounded-xl flex items-center justify-center text-gray-800 text-xl font-semibold">
-						Seção principal de recursos do Churchment
-					</div>
+					<FeatureCard
+						direction="right"
+						imageUrl="https://images.unsplash.com/photo-1682407186023-12c70a4a35e0?ixlib=rb-4.0.3&auto=format&fit=crop&w=2832&q=80"
+						altText="Gestão de eventos e escalas de igreja"
+						title="Comunicação interna facilitada para ministérios"
+						description="Conecte líderes e equipes com um sistema de mensagens intuitivo. Diga adeus aos grupos desorganizados!"
+						buttonText="Fortaleça a comunicação"
+						feature_one="Chats por ministério"
+						feature_two="Mensagens Rapidas"
+						feature_three="Sem distrações"
+					/>
+				</AnimatedSection>
+
+				<AnimatedSection delay={0.3}>
+					<FeatureCard
+						direction="left"
+						imageUrl="https://images.unsplash.com/photo-1682407186023-12c70a4a35e0?ixlib=rb-4.0.3&auto=format&fit=crop&w=2832&q=80"
+						altText="Gestão de eventos e escalas de igreja"
+						title="Relatórios de presença, visitantes e finanças"
+						description="Acompanhe o crescimento da igreja com relatórios detalhados. Monitore visitantes, membros e doações em tempo real."
+						buttonText="Veja os relatórios"
+						feature_one="Dados em tempo real"
+						feature_two="Exportação fácil"
+						feature_three="Insights para decisões"
+					/>
+				</AnimatedSection>
+
+				<AnimatedSection delay={0.4}>
+					<FeatureCard
+						direction="right"
+						imageUrl="https://images.unsplash.com/photo-1682407186023-12c70a4a35e0?ixlib=rb-4.0.3&auto=format&fit=crop&w=2832&q=80"
+						altText="Gestão de eventos e escalas de igreja"
+						title="Integração com Google Calendar, Drive e muito mais"
+						description="Sincronize eventos, armazene documentos e compartilhe materiais com sua equipe de forma simples e rápida." Add commentMore actions
+						buttonText="Conecte sua igreja"
+						feature_one="Sincronização automática"
+						feature_two="Tudo na nuvem"
+						feature_three="Acesso de qualquer lugar"
+					/>
 				</AnimatedSection>
 			</main>
 
 			<section>
 				<Title
 					title="O que dizem sobre o Churchment"
-					description="Muitas igrejas já estão organizando melhor seus eventos, escalas e a comunicação. Veja o que líderes e membros dizem sobre a plataforma"
+					subtitle="Muitas igrejas já estão organizando melhor seus eventos, escalas e a comunicação. Veja o que líderes e membros dizem sobre a plataforma"
 				/>
 			</section>
 		</>
