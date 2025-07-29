@@ -1,4 +1,5 @@
 import { Button, Typography } from "@material-tailwind/react";
+import AnimatedSection from "../animatedSection";
 
 export default function Cta({
     title,
@@ -21,17 +22,21 @@ export default function Cta({
                     {title}
                 </Typography>
                 {subtitle && (
+                    <AnimatedSection delay={0.1}>
                     <Typography
                         type="p"
                         className={"text-neutral-200"}
                     >
                         {subtitle}
                     </Typography>
+                    </AnimatedSection>
                 )}
             </div>
+            <AnimatedSection delay={0.2}>
             <Button size="xl" color="primary">
                 {cta}
             </Button>
+            </AnimatedSection>
         </div>
     )
 }
