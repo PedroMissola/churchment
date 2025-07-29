@@ -62,7 +62,7 @@ export default async function Home() {
                         >
                             A ferramenta definitiva para a organização da sua igreja
                         </Typography>
-                        <Typography type="lead" className="text-base md:text-xl mt-6 text-gray-700">
+                        <Typography type="lead" className="text-base md:text-xl my-6 text-gray-700">
                             Simplifique a gestão da sua igreja com um sistema intuitivo para
                             eventos, escalas e comunicação interna. Organize tudo em um só lugar.
                         </Typography>
