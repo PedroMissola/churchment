@@ -13,7 +13,7 @@ export default function Title({
 
     return (
         <div
-            className="flex flex-col gap-4 items-center justify-center text-center"
+            className="flex flex-col gap-4 items-center justify-center text-center px-4 md:px-0" // Adicionado px-4 md:px-0 para responsividade
         >
             <Typography
                 type="h2"
@@ -34,4 +34,3 @@ export default function Title({
         </div>
     )
 }
-

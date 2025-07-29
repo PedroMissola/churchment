@@ -10,11 +10,10 @@ import { createClient } from "@/utils/supabase/server";
 import AnimatedSection from "@/components/animatedSection";
 import TestimonialCard from "@/components/ui/card";
 import { ToggleSwitch } from "@/components/ui/toggleswitch";
-import PricingCard from "@/components/ui/princingCard";
-
-// Você pode adicionar uma função para gerar metadados dinamicamente ou estaticamente
-// dependendo do que for mais adequado para a sua aplicação.
-// Este é um exemplo de como seria, se você quiser centralizar as metatags aqui.
+import PricingCard from "@/components/ui/princingCard"; // Ensure this path is correct
+import AccordionList from "@/components/AccordionList";
+import Cta from "@/components/cta";
+import Footer from "@/components/footer";
 
 export const metadata = {
     title: 'Churchment - A ferramenta definitiva para a organização da sua igreja',
@@ -23,11 +22,11 @@ export const metadata = {
     openGraph: {
         title: 'Churchment - Organize sua Igreja com Facilidade',
         description: 'A plataforma completa para gerenciar eventos, escalas, comunicação e muito mais na sua igreja.',
-        url: 'https://www.churchment.com.br/', // Substitua pela URL real do seu site
+        url: 'https://www.churchment.com.br/',
         siteName: 'Churchment',
         images: [
             {
-                url: 'opengraph-image.jpg', // Substitua pela URL da sua imagem OG
+                url: 'opengraph-image.jpg', // Next.js handles relative paths from public dir
                 width: 1200,
                 height: 630,
                 alt: 'Churchment - Organização de Igrejas',
@@ -40,26 +39,21 @@ export const metadata = {
         card: 'summary_large_image',
         title: 'Churchment - A ferramenta definitiva para a organização da sua igreja',
         description: 'Simplifique a gestão da sua igreja com um sistema intuitivo para eventos, escalas e comunicação interna.',
-        creator: '@churchment', // Substitua pelo seu handle do Twitter
-        images: ['https://www.churchment.com.br/twitter-image.jpg'], // Substitua pela URL da sua imagem do Twitter
+        creator: '@churchment',
+        images: ['https://www.churchment.com.br/twitter-image.jpg'],
     },
 };
 
 export default async function Home() {
-    // CORREÇÃO AQUI: Awaite a chamada de cookies()
     const cookieStore = await cookies();
     const supabase = createClient(cookieStore);
-
-    // Exemplo de como você poderia usar o supabase para buscar dados,
-    // embora não seja estritamente necessário para este exemplo de página inicial
-    // const { data: someData, error } = await supabase.from('your_table').select('*');
 
     return (
         <>
             <NavbarDemo />
             <header className="flex flex-col md:flex-row items-center py-12 md:py-24">
                 {/* Texto */}
-                <div className="w-full md:w-1/2 mb-8 md:mb-0 gap-8 flex flex-col justify-center pl-18">
+                <div className="w-full md:w-1/2 mb-8 md:mb-0 gap-8 flex flex-col justify-center px-4 md:px-18"> {/* Changed md:pl-18 to md:px-18 for consistency */}
                     <AnimatedSection delay={0.1}>
                         <Typography
                             type="h1"
@@ -88,6 +82,7 @@ export default async function Home() {
                                 height={500}
                                 className="w-full h-auto"
                                 priority
+                                loading="eager" // Adicionado para priorizar o carregamento da imagem
                             />
                         </div>
                     </AnimatedSection>
@@ -98,7 +93,7 @@ export default async function Home() {
                 <LogoCarousel />
             </AnimatedSection>
 
-            <main className="w-full px-18"> {/* Adjusted padding here */}
+            <main className="w-full px-4 md:px-18" role="main" aria-label="Conteúdo Principal">
                 <AnimatedSection delay={0.1}>
                     <FeatureCard
                         direction="left"
@@ -156,13 +151,13 @@ export default async function Home() {
                 </AnimatedSection>
             </main>
 
-            <section className="bg-gradient-to-b from-[#F4511E] to-[#FF7043] py-16 md:py-24 flex flex-col gap-18">
+            <section className="bg-gradient-to-b from-[#F4511E] to-[#FF7043] py-16 md:py-24 flex flex-col gap-24"> {/* Changed gap-18 to gap-24 */}
                 <Title
                     title="O que dizem sobre o Churchment"
                     color="white"
                     subtitle="Muitas igrejas já estão organizando melhor seus eventos, escalas e a comunicação. Veja o que líderes e membros dizem sobre a plataforma."
                 />
-                <div className="px-18 py-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"> {/* Adjusted padding here */}
+                <div className="px-4 md:px-18 py-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                     <AnimatedSection delay={0.1}>
                         <TestimonialCard
                             title="Facilitou a nossa gestão de eventos!"
@@ -209,74 +204,122 @@ export default async function Home() {
                 </div>
             </section>
 
-            <section className="px-18 py-16 md:py-24 flex flex-col gap-18">
+            <section className="py-16 md:py-24 flex flex-col items-center gap-24"> {/* Changed gap-18 to gap-24 */}
                 <Title
                     title="Escolha o plano ideal para sua igreja"
                     color="black"
                     subtitle="Soluções escaláveis que acompanham o crescimento da sua igreja, com recursos cada vez mais poderosos para uma gestão eficiente e integrada."
                 />
                 <ToggleSwitch />
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <PricingCard
-                        title="Basico"
-                        subtitle="Gratuito para até 15 membros"
-                        price="Gratis"
-                        currency=""
-                        cycleLabel=""
-                        oldPrice=""
-                        oldCycleLabel=""
-                        features={[
-                            { text: "Agendamento e gestão de eventos", included: true },
-                            { text: "Notificações automáticas", included: true },
-                            { text: "Dashboard integrado", included: true },
-                            { text: "Área ministerial básica", included: true },
-                            { text: "Personalização do perfil da Igreja", included: true },
-                            { text: "Relatórios e análises detalhadas", included: false },
-                        ]}
-                        ctaText="SAIBA MAIS"
-                        href="/planos/Básico"
-                    />
-                    <PricingCard
-                        title="Essencial"
-                        subtitle="Mais controle e comunicação"
-                        price={633}
-                        currency="R$"
-                        cycleLabel="/year"
-                        oldPrice={720}
-                        oldCycleLabel="/Anual"
-                        color="black"
-                        features={[
-                            { text: "Todos os recursos do Plano Básico", included: true },
-                            { text: "Relatórios de presença e eventos", included: true },
-                            { text: "Conexão com o Google Agenda e Drive", included: true },
-                            { text: "Chat interno para ministérios", included: true },
-                            { text: "Formulários para visitantes e feedbacks", included: true },
-                            { text: "Biblioteca de Conteúdos", included: false },
-                        ]}
-                        ctaText="SAIBA MAIS"
-                        href="/planos/essencial"
-                    />
-                    <PricingCard
-                        title="Avançado"
-                        subtitle="Gestão completa e profissional"
-                        price={1056}
-                        currency="R$"
-                        cycleLabel="/year"
-                        oldPrice={1056}
-                        oldCycleLabel="/Anual"
-                        features={[
-                            { text: "Todos os recursos do Plano Essencial", included: true },
-                            { text: "Integração com o Google Planilhas e Meet", included: true },
-                            { text: "Relatórios financeiros e do Youtube", included: true },
-                            { text: "Quadro de tarefas nos ministérios", included: true },
-                            { text: "Biblioteca de louvores e temas de cultos", included: true },
-                            { text: "Personalização ilimitada de usuários", included: false },
-                        ]}
-                        ctaText="SAIBA MAIS"
-                        href="/planos/avancado"
-                    />
+                <div className="w-full flex flex-col md:flex-row justify-center items-stretch gap-6 mt-8 px-4 md:px-18"> {/* Changed items-center to items-stretch */}
+                    <AnimatedSection delay={0.1}>
+                        <PricingCard
+                            title="Basico"
+                            subtitle="Gratuito para até 15 membros"
+                            price="Gratis"
+                            currency=""
+                            cycleLabel=""
+                            oldPrice=""
+                            oldCycleLabel=""
+                            features={[
+                                { text: "Agendamento e gestão de eventos", included: true },
+                                { text: "Notificações automáticas", included: true },
+                                { text: "Dashboard integrado", included: true },
+                                { text: "Área ministerial básica", included: true },
+                                { text: "Personalização do perfil da Igreja", included: true },
+                                { text: "Relatórios e análises detalhadas", included: false },
+                            ]}
+                            ctaText="SAIBA MAIS"
+                            href="/planos/Básico"
+                        />
+                    </AnimatedSection>
+                    <AnimatedSection delay={0.2}>
+                        <PricingCard
+                            title="Essencial"
+                            subtitle="Mais controle e comunicação"
+                            price={633}
+                            currency="R$"
+                            cycleLabel="/year"
+                            oldPrice={720}
+                            oldCycleLabel="/Anual"
+                            color="black"
+                            features={[
+                                { text: "Todos os recursos do Plano Básico", included: true },
+                                { text: "Relatórios de presença e eventos", included: true },
+                                { text: "Conexão com o Google Agenda e Drive", included: true },
+                                { text: "Chat interno para ministérios", included: true },
+                                { text: "Formulários para visitantes e feedbacks", included: true },
+                                { text: "Biblioteca de Conteúdos", included: false },
+                            ]}
+                            ctaText="SAIBA MAIS"
+                            href="/planos/essencial"
+                        />
+                    </AnimatedSection>
+                    <AnimatedSection delay={0.3}>
+                        <PricingCard
+                            title="Avançado"
+                            subtitle="Gestão completa e profissional"
+                            price={1056}
+                            currency="R$"
+                            cycleLabel="/year"
+                            oldPrice={1056}
+                            oldCycleLabel="/Anual"
+                            features={[
+                                { text: "Todos os recursos do Plano Essencial", included: true },
+                                { text: "Integração com o Google Planilhas e Meet", included: true },
+                                { text: "Relatórios financeiros e do Youtube", included: true },
+                                { text: "Quadro de tarefas nos ministérios", included: true },
+                                { text: "Biblioteca de louvores e temas de cultos", included: true },
+                                { text: "Personalização ilimitada de usuários", included: false },
+                            ]}
+                            ctaText="SAIBA MAIS"
+                            href="/planos/avancado"
+                        />
+                    </AnimatedSection>
                 </div>
             </section>
+            <section className="py-16 md:py-24 flex flex-col items-center gap-24"> {/* Changed gap-18 to gap-24 */}
+                <Title
+                    title="Perguntas Frequentes"
+                    color="black"
+                    subtitle="Tire suas dúvidas e saiba mais sobre como a plataforma pode transformar a gestão da sua igreja."
+                />
+                <div className="w-full flex flex-col md:flex-row justify-center items-center gap-24 mt-8 px-4 md:px-18">
+                    <div className="w-full flex flex-col justify-center items-center gap-6">
+                        <AccordionList
+                            defaultValue="plano gratuito" // Changed default value to match an existing item
+                            baseDelay={0.2}  // primeiro item entra após 200ms
+                            stagger={0.1}    // cada próximo item atrasa +100ms
+                            items={[
+                                { value: "plano gratuito", title: "O que está incluído no plano gratuito?", content: "O plano gratuito oferece funcionalidades essenciais para até 60 membros, incluindo agendamento de eventos, notificações automáticas e uma visão geral dos ministérios e escalas." },
+                                { value: "alterar plano", title: "Posso alterar meu plano depois de assinar?", content: "Sim, você pode mudar de plano a qualquer momento. Basta acessar sua área de configurações e escolher o plano que melhor atende às necessidades da sua igreja." },
+                                { value: "membros por plano", title: "Quantos membros posso ter em cada plano?", content: "No Plano Básico, você pode adicionar até 60 membros. O Plano Essencial permite até 200 membros, e o Plano Avançado suporta até 600 membros, com possibilidade de expansão personalizada." },
+                                { value: "suporte tecnico", title: "Sim, todos os planos têm suporte técnico. O suporte prioritário é exclusivo para os planos Essencial e Avançado.", content: "Sim, todos os planos têm suporte técnico. O suporte prioritário é exclusivo para os planos Essencial e Avançado." },
+                            ]}
+                        />
+                    </div>
+
+                    <div className="w-full flex flex-col justify-center items-center gap-6">
+                        <AccordionList
+                            defaultValue="integracoes" // Changed default value to match an existing item
+                            baseDelay={0.2}  // primeiro item entra após 200ms
+                            stagger={0.1}    // cada próximo item atrasa +100ms
+                            items={[
+                                { value: "integracoes", title: "Posso integrar a plataforma com outras ferramentas?", content: "Sim, a plataforma oferece integrações com Google Calendar, Google Drive, Google Sheets, Google Forms, Google Meet e muito mais nos planos Essencial e Avançado." },
+                                { value: "mobile", title: "A plataforma tem uma versão móvel?", content: "Sim, a plataforma está disponível em versão mobile, garantindo acesso fácil e rápido de qualquer lugar." },
+                                { value: "limite de eventos", title: "Há um limite de eventos que posso criar por mês?", content: "Sim. No Plano Básico, o limite é de 24 eventos mensais. No Plano Essencial, você pode criar até 64 eventos, e no Plano Avançado, até 128 eventos mensais." },
+                                { value: "plano vitalicio", title: "O que é o Plano Vitalício?", content: "O Plano Vitalício oferece acesso completo à plataforma com pagamento único e sem mensalidades. Ele inclui todos os recursos dos planos pagos, além de suporte exclusivo e personalização da plataforma." },
+                            ]}
+                        />
+                    </div>
+                </div>
+            </section>
+            <Cta
+                title="Pronto para organizar sua igreja de forma simples e eficiente?"
+                subtitle="Experimente o Churchment gratuitamente e descubra como podemos ajudar sua igreja a crescer com organização e comunicação eficaz."
+                cta="Criar Conta grátis"
+            />
+            <Footer />
         </>
     );
 }

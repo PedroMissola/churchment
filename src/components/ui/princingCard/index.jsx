@@ -6,20 +6,20 @@ import { CheckCircleSolid, MinusCircle } from "iconoir-react";
 /**
  * PricingCard
  * Props:
- *  - title?: string
- *  - subtitle?: string
- *  - price?: number | string           (ex.: 1056 ou "Grátis")
- *  - isFree?: boolean                  (força o modo grátis)
- *  - freeLabel?: string                (padrão "Grátis")
- *  - currency?: string                 (ex.: "R$")
- *  - cycleLabel?: string               (ex.: "/year", "/mês", "/anual")
- *  - oldPrice?: number | string        (opcional; ignorado se grátis)
- *  - oldCycleLabel?: string            (ex.: "/Anual")
- *  - features?: Array<{ text: string, included?: boolean }>
- *  - ctaText?: string
- *  - onCtaClick?: () => void
- *  - href?: string
- *  - color?: "white" | "black"         (tema do card; padrão "white")
+ * - title?: string
+ * - subtitle?: string
+ * - price?: number | string           (ex.: 1056 ou "Grátis")
+ * - isFree?: boolean                  (força o modo grátis)
+ * - freeLabel?: string                (padrão "Grátis")
+ * - currency?: string                 (ex.: "R$")
+ * - cycleLabel?: string               (ex.: "/year", "/mês", "/anual")
+ * - oldPrice?: number | string        (opcional; ignorado se grátis)
+ * - oldCycleLabel?: string            (ex.: "/Anual")
+ * - features?: Array<{ text: string, included?: boolean }>
+ * - ctaText?: string
+ * - onCtaClick?: () => void
+ * - href?: string
+ * - color?: "white" | "black"         (tema do card; padrão "white")
  */
 export default function PricingCard({
   title = "Avançado",
@@ -45,82 +45,55 @@ export default function PricingCard({
   color = "white",
 }) {
   const isDark = color === "black";
-
   // Detecta "Grátis" automaticamente quando price é string
-  const normalize = (s) =>
-    String(s).normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+  const normalize = (s) => String(s).toLowerCase();
+  const showFree = isFree || normalize(price) === normalize(freeLabel);
 
-  const autoGratis = typeof price === "string" && normalize(price) === "gratis";
-  const isGratis = Boolean(isFree ?? autoGratis);
-
-  const priceStr = String(price);
-  const oldPriceStr = !isGratis && oldPrice !== undefined ? String(oldPrice) : undefined;
-
-  // Paleta condicional (apenas cores; mantém estrutura e espaçamentos)
-  const cardBg = isDark ? "bg-primary" : "bg-white";
-  const cardBorder = isDark ? "border-primary" : "border-[#E4E4E4]";
-  const titleColor = isDark ? "text-white" : "text-[#171717]";
-  const subtitleColor = isDark ? "text-neutral-400" : "text-[#525252]";
-  const secondaryText = "text-secondary";
-  const oldText = isDark ? "text-neutral-400" : "text-primary-light";
-
-  // Ícones condicionais
-  const includedIconColor = isDark ? "text-white" : "text-primary";
-  const excludedIconColor = isDark ? "text-neutral-500" : "text-neutral-400";
-
-  // Botão condicional (cores apenas)
-  const btnClass = isDark
-    ? "rounded-xl bg-white text-black hover:bg-white"
-    : "rounded-xl";
-  const btnPropsColor = isDark ? {} : { color: "primary" }; // no claro usa primary
+  // Classes condicionais para cores
+  const cardBgClass = isDark ? "bg-[#212121]" : "bg-white";
+  const cardBorderClass = isDark ? "border-transparent" : "border-gray-200";
+  const titleClass = isDark ? "text-white" : "text-primary";
+  const subtitleClass = isDark ? "text-neutral-300" : "text-neutral-700";
+  const priceClass = isDark ? "text-white" : "text-primary";
+  const cycleClass = isDark ? "text-neutral-400" : "text-neutral-600";
+  const oldText = isDark ? "text-neutral-400 line-through" : "text-neutral-500 line-through";
+  const includedIconColor = isDark ? "text-secondary-light" : "text-secondary";
+  const excludedIconColor = isDark ? "text-primary-foreground" : "text-primary-light";
+  const btnClass = isDark ? "bg-white text-primary" : "bg-primary text-white";
+  const btnPropsColor = isDark ? { color: "white" } : { color: "primary" };
 
   return (
     <Card
-      className={`
-        w-full max-w-sm rounded-xl border ${cardBorder} ${cardBg}
-        shadow-md p-6 h-fit
-      `}
+      className={`w-full flex flex-col p-4 md:p-6 gap-6 rounded-lg border shadow-sm ${cardBgClass} ${cardBorderClass}`} // Ajustado padding e gap para responsividade
+      data-dark={isDark} // Adicionado para estilização mais flexível com data attributes
     >
-      {/* Cabeçalho */}
-      <div className="mb-4">
-        <Typography className={`text-xl font-semibold ${titleColor}`}>
+      {/* Cabeçalho do Card */}
+      <div className="flex flex-col gap-2 border-b border-gray-200 pb-4">
+        <Typography type="h5" className={`font-semibold ${titleClass}`}>
           {title}
         </Typography>
-        <Typography className={`mt-1 text-sm ${subtitleColor}`}>
+        <Typography type="p" className={`text-sm ${subtitleClass}`}>
           {subtitle}
         </Typography>
       </div>
 
-      {/* Preço atual / Grátis */}
-      <div className="mb-2">
-        <span
-          className={`text-3xl font-bold leading-none ${
-            isGratis ? "text-primary" : secondaryText
-          }`}
-        >
-          {isGratis ? (
-            freeLabel
-          ) : (
-            <>
-              {currency}
-              {priceStr}
-            </>
-          )}
-        </span>
-
-        {!isGratis && (
-          <span className={`ml-1 align-middle text-lg font-semibold ${secondaryText}`}>
+      {/* Preço */}
+      <div className="flex items-baseline gap-2">
+        <Typography type="h3" className={`font-bold ${priceClass}`}>
+          {showFree ? freeLabel : `${currency}${price}`}
+        </Typography>
+        {!showFree && cycleLabel && (
+          <Typography type="p" className={`text-sm ${cycleClass}`}>
             {cycleLabel}
-          </span>
+          </Typography>
         )}
       </div>
 
-      {/* Preço antigo (não mostra quando é grátis) */}
-      {oldPriceStr && (
-        <div className="mb-4">
-          <span className={`text-lg line-through ${oldText}`}>
-            {currency}
-            {oldPriceStr}
+      {/* Preço Antigo (se houver e não for grátis) */}
+      {!showFree && oldPrice && (
+        <div className="mb-4 text-sm">
+          <span className={`text-base ${oldText}`}>
+            De: {currency}{oldPrice}
             <span className={`ml-1 align-middle text-xs ${oldText}`}>
               {oldCycleLabel}
             </span>
@@ -129,7 +102,7 @@ export default function PricingCard({
       )}
 
       {/* Lista de features */}
-      <ul className="mb-6 space-y-4">
+      <ul className="mb-4 space-y-3 md:mb-6 md:space-y-4"> {/* Ajustado mb e space-y para responsividade */}
         {features
           .filter((f) => f && f.text)
           .map((item, idx) => {
@@ -137,9 +110,9 @@ export default function PricingCard({
             return (
               <li key={idx} className="flex items-start gap-3">
                 {included ? (
-                  <CheckCircleSolid className={`mt-0.5 h-6 w-6 ${includedIconColor}`} />
+                  <CheckCircleSolid className={`mt-0.5 h-6 w-6 shrink-0 ${includedIconColor}`} />
                 ) : (
-                  <MinusCircle className={`mt-0.5 h-6 w-6 ${excludedIconColor}`} />
+                  <MinusCircle className={`mt-0.5 h-6 w-6 shrink-0 ${excludedIconColor}`} />
                 )}
                 <Typography className={included ? (isDark ? "text-white" : "text-[#171717]") : (isDark ? "text-neutral-400" : "text-neutral-600")}>
                   {item.text}
@@ -163,10 +136,10 @@ export default function PricingCard({
         </Button>
       ) : (
         <Button
-          onClick={onCtaClick}
           isFullWidth
           size="lg"
           className={btnClass}
+          onClick={onCtaClick}
           {...btnPropsColor}
         >
           {ctaText}

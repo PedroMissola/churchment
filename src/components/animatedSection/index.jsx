@@ -14,7 +14,7 @@ const AnimatedSection = ({ children, delay = 0 }) => {
             ref={ref}
             initial={{ opacity: 0, y: 50 }}
             animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
-            transition={{ duration: 0.6, ease: "easeOut", delay }}
+            transition={{ duration: 0.5, ease: "easeOut", delay }} // Ajustado duration de 0.6 para 0.5
         >
             {children}
         </motion.div>

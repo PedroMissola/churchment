@@ -22,7 +22,7 @@ export default function TestimonialCard({
             // Classes de responsividade: w-full para ocupar a largura total,
             // flex-col para empilhar o conteúdo verticalmente.
             // Transições e interatividade: Animações suaves ao passar o mouse.
-            className="w-full h-full flex flex-col p-6 gap-4 transition-all duration-300 hover:scale-[1.02] hover:-translate-y-1 hover:shadow-xl cursor-pointer border border-gray-200 rounded-xl bg-white"
+            className="w-full h-full flex flex-col p-4 md:p-6 gap-3 md:gap-4 transition-all duration-300 hover:scale-[1.02] hover:-translate-y-1 hover:shadow-xl cursor-pointer border border-gray-200 rounded-xl bg-white" // Ajustado p-6 para p-4 md:p-6 e gap-4 para gap-3 md:gap-4
             role="group" // Agrupa elementos relacionados para tecnologias assistivas.
         >
             <CardHeader
@@ -48,7 +48,7 @@ export default function TestimonialCard({
 
             <CardFooter as="figcaption" className="p-0 pt-4 flex flex-col justify-end gap-4 mt-auto"> {/* mt-auto para empurrar o rodapé para baixo */}
                 <div className="flex items-center gap-4">
-                    <Avatar size="lg" alt={authorName} src={avatarSrc} className="border border-gray-100" />
+                    <Avatar size="lg" alt={authorName} src={avatarSrc} className="border border-gray-100" aria-hidden="true" /> {/* Adicionado aria-hidden */}
                     <div className="flex flex-col">
                         <Typography type="h6" className="text-gray-900">{authorName}</Typography>
                         <Typography type="small" color="gray" className="text-gray-500">{authorRole}</Typography>

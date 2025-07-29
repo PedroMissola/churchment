@@ -41,7 +41,7 @@ export default function LogoCarousel() {
   }, [isPaused]);
 
   return (
-    <section className="py-[36px] px-18 flex flex-col text-center">
+    <section className="py-[36px] px-4 sm:px-6 md:px-8 flex flex-col text-center" role="region" aria-label="Carousel de Logos de Igrejas">
       <Typography type='h6' color='primary'>
         Já ajudamos igrejas ao redor do mundo a se organizarem melhor.
       </Typography>
@@ -59,12 +59,15 @@ export default function LogoCarousel() {
           {[...logos, ...logos].map((logo, index) => (
             <div
               key={index}
-              className="mx-8 flex-shrink-0 transition-all duration-300 hover:scale-110"
+              // Ajustado para 2 imagens em mobile (w-1/2) e 6 em desktop (md:w-1/6)
+              // Adicionado px-4 para padding interno e espaçamento entre os logos.
+              className="w-1/2 md:w-1/6 px-4 flex-shrink-0 transition-all duration-300 hover:scale-110"
+              aria-hidden={index >= logos.length}
             >
               <img
                 src={logo}
                 alt="Logo de igreja"
-                className="h-32 w-auto object-contain opacity-80 hover:opacity-100"
+                className="h-24 sm:h-28 md:h-32 w-auto object-contain opacity-80 hover:opacity-100"
                 draggable="false"
               />
             </div>

@@ -1,5 +1,8 @@
+'use client'
+
 import { Button, Typography } from "@material-tailwind/react";
 import Image from "next/image";
+import { useState, useEffect } from 'react'; // Importe useState e useEffect
 
 export default function FeatureCard({
     direction = "left", // 'left' ou 'right'
@@ -13,9 +16,31 @@ export default function FeatureCard({
     feature_three
 }) {
     const isReversed = direction === "right";
+    // Estado para controlar o tamanho do botão
+    const [buttonSize, setButtonSize] = useState("md");
+
+    useEffect(() => {
+        // Função para atualizar o tamanho do botão com base na largura da janela
+        const handleResize = () => {
+            if (window.innerWidth >= 768) { // Tailwind CSS 'md' breakpoint
+                setButtonSize("xl");
+            } else {
+                setButtonSize("md");
+            }
+        };
+
+        // Define o tamanho inicial quando o componente é montado
+        handleResize();
+
+        // Adiciona o event listener para redimensionamento da janela
+        window.addEventListener("resize", handleResize);
+
+        // Limpa o event listener quando o componente é desmontado
+        return () => window.removeEventListener("resize", handleResize);
+    }, []); // O array de dependências vazio garante que o efeito rode apenas uma vez na montagem
 
     return (
-        <div className={`flex flex-col ${isReversed ? "md:flex-row-reverse" : "md:flex-row"} gap-4 md:gap-16 py-6 md:py-24 items-center`}>
+        <div className={`flex flex-col ${isReversed ? "md:flex-row-reverse" : "md:flex-row"} gap-8 py-6 md:py-24 items-center`}>
             <div className="w-full md:w-1/2">
                 <Image
                     src={imageUrl}
@@ -28,20 +53,21 @@ export default function FeatureCard({
 
             <div className={`w-full md:w-1/2 flex flex-col gap-4 md:gap-8 ${isReversed ? "md:items-end" : ""}`}>
                 {/* Título: 24px em mobile, tamanho original em desktop */}
-                <Typography variant="h3" className={`text-2xl md:text-4xl font-semibold ${isReversed ? "md:text-right" : ""}`} color="primary">
+                <Typography variant="h3" className={`text-2xl md:text-4xl font-semibold ${isReversed ? "md:text-right" : ""} text-left`} color="primary">
                     {title}
                 </Typography>
-
                 {/* Descrição: 14px em mobile, tamanho original em desktop */}
-                <Typography className={`text-sm md:text-xl ${isReversed ? "md:text-right" : ""}`} color="primary-light">
+                <Typography
+                    type="p"
+                    className={`text-sm text-neutral-800 md:text-base ${isReversed ? "md:text-right" : ""} text-left`}
+                >
                     {description}
                 </Typography>
-
                 {/* Features: 12px em mobile, tamanho original em desktop */}
-                <div className={`flex flex-col md:flex-row gap-2 md:gap-8 ${isReversed ? "md:justify-end" : ""}`}>
+                <div className={`flex flex-wrap md:flex-row gap-2 md:gap-4 ${isReversed ? "md:justify-end" : ""} text-left md:text-left`}>
                     {feature_one && (
                         <Typography
-                            className={`text-xs md:text-sm ${isReversed ? "md:text-right" : ""}`}
+                            className={`text-xs md:text-sm ${isReversed ? "md:text-right" : ""} text-left`}
                             color="secondary"
                         >
                             {feature_one}
@@ -50,7 +76,7 @@ export default function FeatureCard({
 
                     {feature_two && (
                         <Typography
-                            className={`text-xs md:text-sm ${isReversed ? "md:text-right" : ""}`}
+                            className={`text-xs md:text-sm ${isReversed ? "md:text-right" : ""} text-left`}
                             color="secondary"
                         >
                             {feature_two}
@@ -59,7 +85,7 @@ export default function FeatureCard({
 
                     {feature_three && (
                         <Typography
-                            className={`text-xs md:text-sm ${isReversed ? "md:text-right" : ""}`}
+                            className={`text-xs md:text-sm ${isReversed ? "md:text-right" : ""} text-left`}
                             color="secondary"
                         >
                             {feature_three}
@@ -67,7 +93,10 @@ export default function FeatureCard({
                     )}
                 </div>
 
-                <Button className={`w-fit ${isReversed ? "self-end" : ""} uppercase`} size="xl">
+                <Button
+                    className={`w-fit uppercase self-start ${isReversed ? "md:self-end" : ""}`}
+                    size={buttonSize} // Usa o estado para definir o tamanho do botão
+                >
                     {buttonText}
                 </Button>
             </div>
