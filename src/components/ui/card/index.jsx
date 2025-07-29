@@ -19,7 +19,6 @@ export default function TestimonialCard({
     return (
         <Card
             as="figure" // Melhora o SEO tratando o card como uma figura de conteúdo.
-            shadow={true}
             // Classes de responsividade: w-full para ocupar a largura total,
             // flex-col para empilhar o conteúdo verticalmente.
             // Transições e interatividade: Animações suaves ao passar o mouse.
@@ -28,8 +27,7 @@ export default function TestimonialCard({
         >
             <CardHeader
                 color="transparent"
-                floated={false}
-                shadow={false}
+                shadow="false"
                 className="p-0"
             >
                 <Typography

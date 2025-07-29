@@ -9,6 +9,8 @@ import Title from "@/components/title";
 import { createClient } from "@/utils/supabase/server";
 import AnimatedSection from "@/components/animatedSection";
 import TestimonialCard from "@/components/ui/card";
+import { ToggleSwitch } from "@/components/ui/toggleswitch";
+import PricingCard from "@/components/ui/princingCard";
 
 // Você pode adicionar uma função para gerar metadados dinamicamente ou estaticamente
 // dependendo do que for mais adequado para a sua aplicação.
@@ -25,7 +27,7 @@ export const metadata = {
         siteName: 'Churchment',
         images: [
             {
-                url: 'https://www.churchment.com.br/og-image.jpg', // Substitua pela URL da sua imagem OG
+                url: 'opengraph-image.jpg', // Substitua pela URL da sua imagem OG
                 width: 1200,
                 height: 630,
                 alt: 'Churchment - Organização de Igrejas',
@@ -44,7 +46,8 @@ export const metadata = {
 };
 
 export default async function Home() {
-    const cookieStore = cookies();
+    // CORREÇÃO AQUI: Awaite a chamada de cookies()
+    const cookieStore = await cookies();
     const supabase = createClient(cookieStore);
 
     // Exemplo de como você poderia usar o supabase para buscar dados,
@@ -206,6 +209,74 @@ export default async function Home() {
                 </div>
             </section>
 
+            <section className="px-18 py-16 md:py-24 flex flex-col gap-18">
+                <Title
+                    title="Escolha o plano ideal para sua igreja"
+                    color="black"
+                    subtitle="Soluções escaláveis que acompanham o crescimento da sua igreja, com recursos cada vez mais poderosos para uma gestão eficiente e integrada."
+                />
+                <ToggleSwitch />
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <PricingCard
+                        title="Basico"
+                        subtitle="Gratuito para até 15 membros"
+                        price="Gratis"
+                        currency=""
+                        cycleLabel=""
+                        oldPrice=""
+                        oldCycleLabel=""
+                        features={[
+                            { text: "Agendamento e gestão de eventos", included: true },
+                            { text: "Notificações automáticas", included: true },
+                            { text: "Dashboard integrado", included: true },
+                            { text: "Área ministerial básica", included: true },
+                            { text: "Personalização do perfil da Igreja", included: true },
+                            { text: "Relatórios e análises detalhadas", included: false },
+                        ]}
+                        ctaText="SAIBA MAIS"
+                        href="/planos/Básico"
+                    />
+                    <PricingCard
+                        title="Essencial"
+                        subtitle="Mais controle e comunicação"
+                        price={633}
+                        currency="R$"
+                        cycleLabel="/year"
+                        oldPrice={720}
+                        oldCycleLabel="/Anual"
+                        color="black"
+                        features={[
+                            { text: "Todos os recursos do Plano Básico", included: true },
+                            { text: "Relatórios de presença e eventos", included: true },
+                            { text: "Conexão com o Google Agenda e Drive", included: true },
+                            { text: "Chat interno para ministérios", included: true },
+                            { text: "Formulários para visitantes e feedbacks", included: true },
+                            { text: "Biblioteca de Conteúdos", included: false },
+                        ]}
+                        ctaText="SAIBA MAIS"
+                        href="/planos/essencial"
+                    />
+                    <PricingCard
+                        title="Avançado"
+                        subtitle="Gestão completa e profissional"
+                        price={1056}
+                        currency="R$"
+                        cycleLabel="/year"
+                        oldPrice={1056}
+                        oldCycleLabel="/Anual"
+                        features={[
+                            { text: "Todos os recursos do Plano Essencial", included: true },
+                            { text: "Integração com o Google Planilhas e Meet", included: true },
+                            { text: "Relatórios financeiros e do Youtube", included: true },
+                            { text: "Quadro de tarefas nos ministérios", included: true },
+                            { text: "Biblioteca de louvores e temas de cultos", included: true },
+                            { text: "Personalização ilimitada de usuários", included: false },
+                        ]}
+                        ctaText="SAIBA MAIS"
+                        href="/planos/avancado"
+                    />
+                </div>
+            </section>
         </>
     );
 }

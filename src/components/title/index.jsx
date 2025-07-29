@@ -25,6 +25,7 @@ export default function Title({
             {subtitle && (
                 <Typography
                     type="p"
+                    color="foreground"
                     className={subtitleColorClass}
                 >
                     {subtitle}
