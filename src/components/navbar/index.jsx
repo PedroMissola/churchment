@@ -1,9 +1,8 @@
 "use client";
 
-import * as React from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   Button,
-  IconButton,
   Typography,
   Collapse,
   Navbar,
@@ -32,7 +31,7 @@ const LINKS = [
   },
 ];
 
-function NavList() {
+function NavList({ onLinkClick }) {
   return (
     <ul className="mt-4 flex flex-col gap-x-3 gap-y-1.5 lg:mt-0 lg:flex-row lg:items-center">
       {LINKS.map(({ title, href }) => (
@@ -42,6 +41,7 @@ function NavList() {
             href={href}
             type="p"
             className="flex items-center gap-x-2 p-1 hover:text-primary"
+            onClick={onLinkClick} // Adiciona o manipulador de clique para fechar o menu
           >
             {title}
           </Typography>
@@ -52,14 +52,37 @@ function NavList() {
 }
 
 export default function NavbarDemo() {
-  const [openNav, setOpenNav] = React.useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const mobileMenuRef = useRef(null); // Ref para o menu mobile
 
-  React.useEffect(() => {
-    window.addEventListener(
-      "resize",
-      () => window.innerWidth >= 960 && setOpenNav(false)
-    );
+  // Efeito para fechar o menu mobile ao clicar fora dele
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (mobileMenuRef.current && !mobileMenuRef.current.contains(event.target) && event.target.closest('button[aria-label="Abrir ou fechar menu móvel"]') === null) {
+        setIsMobileMenuOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
   }, []);
+
+  // Efeito para fechar o menu mobile ao redimensionar a tela para desktop
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 960) {
+        setIsMobileMenuOpen(false);
+      }
+    };
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
+  const toggleMobileMenu = () => setIsMobileMenuOpen(!isMobileMenuOpen);
 
   return (
     <Navbar className="w-full border-transparent shadow-none px-9 md:px-18 py-4">
@@ -91,22 +114,18 @@ export default function NavbarDemo() {
             Register
           </Button>
         </div>
-        <IconButton
-          size="sm"
-          variant="ghost"
-          color="secondary"
-          onClick={() => setOpenNav(!openNav)}
-          className="ml-auto grid lg:hidden"
+        {/* Botão Mobile */}
+        <button
+          onClick={toggleMobileMenu}
+          className="ml-auto grid lg:hidden text-neutral-700"
+          aria-label="Abrir ou fechar menu móvel"
         >
-          {openNav ? (
-            <Xmark className="h-4 w-4" />
-          ) : (
-            <Menu className="h-4 w-4" />
-          )}
-        </IconButton>
+          {isMobileMenuOpen ? <Xmark className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
+        </button>
       </div>
-      <Collapse open={openNav}>
-        <NavList />
+      {/* Menu Mobile */}
+      <Collapse open={isMobileMenuOpen} ref={mobileMenuRef}>
+        <NavList onLinkClick={() => setIsMobileMenuOpen(false)} />
         <Button isFullWidth size="sm" className="mt-4">
           Sign In
         </Button>
