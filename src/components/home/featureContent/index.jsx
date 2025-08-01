@@ -91,7 +91,7 @@ export default function FeatureCard({
                 </div>
 
                 <Button
-                    className={`w-fit uppercase self-start bg-surface-dark border-surface-dark hover:bg-neutral-700 hover:border-neutral-700 ${isReversed ? "md:self-end" : ""}`}
+                    className={`w-fit uppercase self-start bg-secondary-dark border-secondary-dark hover:bg-neutral-700 hover:border-neutral-700 ${isReversed ? "md:self-end" : ""}`}
                     color="secondary"
                     size={buttonSize} // Usa o estado para definir o tamanho do botão
                 >

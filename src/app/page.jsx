@@ -60,7 +60,7 @@ export default async function Home() {
                             Simplifique a gestão da sua igreja com um sistema intuitivo para
                             eventos, escalas e comunicação interna. Organize tudo em um só lugar.
                         </Typography>
-                        <Button size="lg" variant="solid" color="secondary" className="bg-surface-dark border-surface-dark hover:bg-neutral-700 hover:border-neutral-700">
+                        <Button size="lg" variant="solid" color="secondary" className="bg-secondary-dark border-secondary-dark hover:bg-neutral-700 hover:border-neutral-700">
                             COMECE GRÁTIS
                         </Button>
                     </AnimatedSection>

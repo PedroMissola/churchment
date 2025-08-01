@@ -33,7 +33,7 @@ export default function Cta({
                 )}
             </div>
             <AnimatedSection delay={0.2}>
-            <Button size="xl" color="secondary" className="bg-surface-dark border-surface-dark hover:bg-neutral-700 hover:border-neutral-700">
+            <Button size="xl" color="secondary" className="bg-secondary-dark border-secondary-dark hover:bg-neutral-700 hover:border-neutral-700">
                 {cta}
             </Button>
             </AnimatedSection>

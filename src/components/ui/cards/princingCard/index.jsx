@@ -59,7 +59,7 @@ export default function PricingCard({
   const oldText = isDark ? "text-neutral-400 line-through" : "text-neutral-500 line-through";
   const includedIconColor = isDark ? "text-neutral-300" : "text-secondary-dark";
   const excludedIconColor = isDark ? "text-neutral-600" : "text-neutral-500";
-  const btnClass = isDark ? "bg-primary-dark text-white border-primary-dark hover:bg-orange-500 hover:border-orange-500" : "bg-surface-dark border-surface-dark hover:bg-neutral-700 hover:border-neutral-700";
+  const btnClass = isDark ? "bg-primary-dark text-white border-primary-dark hover:bg-orange-500 hover:border-orange-500" : "bg-secondary-dark border-secondary-dark hover:bg-neutral-700 hover:border-neutral-700";
   const btnPropsColor = isDark ? { color: "white" } : { color: "primary" };
 
   return (
