@@ -2,7 +2,7 @@
 
 import { usePathname } from 'next/navigation';
 import { useEffect } from 'react';
-import * as gtag from '@/utils/gtag';
+import * as gtag from '@/lib/utils/gtag';
 
 export function GoogleAnalyticsTracker() {
     const pathname = usePathname();

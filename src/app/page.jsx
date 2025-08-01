@@ -1,19 +1,16 @@
 // app/page.jsx — SERVER COMPONENT (sem 'use client')
-import LogoCarousel from "@/components/carousel";
-import FeatureCard from "@/components/featureContent";
+import LogoCarousel from "@/components/home/carousel";
+import FeatureCard from "@/components/home/featureContent";
 import NavbarDemo from "@/components/navbar";
 import { Button, Typography } from "@material-tailwind/react";
 import Image from "next/image";
-import { cookies } from "next/headers";
 import Title from "@/components/title";
-import { createClient } from "@/utils/supabase/server";
 import AnimatedSection from "@/components/animatedSection";
-import TestimonialCard from "@/components/ui/card";
-import { ToggleSwitch } from "@/components/ui/toggleswitch";
-import PricingCard from "@/components/ui/princingCard"; // Ensure this path is correct
-import AccordionList from "@/components/AccordionList";
+import TestimonialCard from "@/components/ui/cards/card";
+import AccordionList from "@/components/home/AccordionList";
 import Cta from "@/components/cta";
 import Footer from "@/components/footer";
+import PricingSection from "@/components/home/princingsection";
 
 export const metadata = {
     title: 'Churchment - A ferramenta definitiva para a organização da sua igreja',
@@ -45,8 +42,6 @@ export const metadata = {
 };
 
 export default async function Home() {
-    const cookieStore = await cookies();
-    const supabase = createClient(cookieStore);
 
     return (
         <>
@@ -204,92 +199,20 @@ export default async function Home() {
                 </div>
             </section>
 
-            <section className="py-16 md:py-24 flex flex-col items-center gap-24"> {/* Changed gap-18 to gap-24 */}
-                <Title
-                    title="Escolha o plano ideal para sua igreja"
-                    color="black"
-                    subtitle="Soluções escaláveis que acompanham o crescimento da sua igreja, com recursos cada vez mais poderosos para uma gestão eficiente e integrada."
-                />
-                <ToggleSwitch />
-                <div className="w-full flex flex-col md:flex-row justify-center items-stretch gap-6 mt-8 px-4 md:px-18"> {/* Changed items-center to items-stretch */}
-                    <AnimatedSection delay={0.1}>
-                        <PricingCard
-                            title="Basico"
-                            subtitle="Gratuito para até 15 membros"
-                            price="Gratis"
-                            currency=""
-                            cycleLabel=""
-                            oldPrice=""
-                            oldCycleLabel=""
-                            features={[
-                                { text: "Agendamento e gestão de eventos", included: true },
-                                { text: "Notificações automáticas", included: true },
-                                { text: "Dashboard integrado", included: true },
-                                { text: "Área ministerial básica", included: true },
-                                { text: "Personalização do perfil da Igreja", included: true },
-                                { text: "Relatórios e análises detalhadas", included: false },
-                            ]}
-                            ctaText="SAIBA MAIS"
-                            href="/planos/Básico"
-                        />
-                    </AnimatedSection>
-                    <AnimatedSection delay={0.2}>
-                        <PricingCard
-                            title="Essencial"
-                            subtitle="Mais controle e comunicação"
-                            price={633}
-                            currency="R$"
-                            cycleLabel="/year"
-                            oldPrice={720}
-                            oldCycleLabel="/Anual"
-                            color="black"
-                            features={[
-                                { text: "Todos os recursos do Plano Básico", included: true },
-                                { text: "Relatórios de presença e eventos", included: true },
-                                { text: "Conexão com o Google Agenda e Drive", included: true },
-                                { text: "Chat interno para ministérios", included: true },
-                                { text: "Formulários para visitantes e feedbacks", included: true },
-                                { text: "Biblioteca de Conteúdos", included: false },
-                            ]}
-                            ctaText="SAIBA MAIS"
-                            href="/planos/essencial"
-                        />
-                    </AnimatedSection>
-                    <AnimatedSection delay={0.3}>
-                        <PricingCard
-                            title="Avançado"
-                            subtitle="Gestão completa e profissional"
-                            price={1056}
-                            currency="R$"
-                            cycleLabel="/year"
-                            oldPrice={1056}
-                            oldCycleLabel="/Anual"
-                            features={[
-                                { text: "Todos os recursos do Plano Essencial", included: true },
-                                { text: "Integração com o Google Planilhas e Meet", included: true },
-                                { text: "Relatórios financeiros e do Youtube", included: true },
-                                { text: "Quadro de tarefas nos ministérios", included: true },
-                                { text: "Biblioteca de louvores e temas de cultos", included: true },
-                                { text: "Personalização ilimitada de usuários", included: false },
-                            ]}
-                            ctaText="SAIBA MAIS"
-                            href="/planos/avancado"
-                        />
-                    </AnimatedSection>
-                </div>
-            </section>
+            <PricingSection />
+
             <section className="py-16 md:py-24 flex flex-col items-center gap-24"> {/* Changed gap-18 to gap-24 */}
                 <Title
                     title="Perguntas Frequentes"
                     color="black"
                     subtitle="Tire suas dúvidas e saiba mais sobre como a plataforma pode transformar a gestão da sua igreja."
                 />
-                <div className="w-full flex flex-col md:flex-row justify-center items-center gap-24 mt-8 px-4 md:px-18">
+                <div className="w-full flex flex-col md:flex-row justify-center items-start gap-24 mt-8 px-4 md:px-18">
                     <div className="w-full flex flex-col justify-center items-center gap-6">
                         <AccordionList
                             defaultValue="plano gratuito" // Changed default value to match an existing item
-                            baseDelay={0.2}  // primeiro item entra após 200ms
-                            stagger={0.1}    // cada próximo item atrasa +100ms
+                            baseDelay={0.1}  // primeiro item entra após 200ms
+                            stagger={0.05}    // cada próximo item atrasa +100ms
                             items={[
                                 { value: "plano gratuito", title: "O que está incluído no plano gratuito?", content: "O plano gratuito oferece funcionalidades essenciais para até 60 membros, incluindo agendamento de eventos, notificações automáticas e uma visão geral dos ministérios e escalas." },
                                 { value: "alterar plano", title: "Posso alterar meu plano depois de assinar?", content: "Sim, você pode mudar de plano a qualquer momento. Basta acessar sua área de configurações e escolher o plano que melhor atende às necessidades da sua igreja." },
