@@ -3,26 +3,26 @@
 
 import { createClient } from '@/lib/supabase/server';
 import { redirect } from 'next/navigation';
-import { headers } from 'next/headers'; // Import já deve estar aqui
+import { headers } from 'next/headers';
 
-// A função login permanece a mesma...
 export async function login(formData) {
   const email = formData.get('email');
   const password = formData.get('password');
 
-  const supabase = await createClient(); // ⬅️ await aqui
+  const supabase = await createClient();
 
   const { error } = await supabase.auth.signInWithPassword({ email, password });
 
   if (error) {
-    return redirect('/auth?message=Credenciais inválidas. Tente novamente.');
+    // ALTERADO: Redireciona para /login em caso de erro
+    return redirect('/login?message=Credenciais inválidas. Tente novamente.');
   }
 
   return redirect('/dashboard');
 }
 
 export async function signup(formData) {
-  const headersList = await headers(); // ✅ await aqui
+  const headersList = await headers();
   const origin = headersList.get('origin');
 
   const email = formData.get('email');
@@ -31,10 +31,12 @@ export async function signup(formData) {
   const first_name = formData.get('first_name');
   const last_name = formData.get('last_name');
 
-  const supabase = await createClient(); // ✅ await aqui também
+  const supabase = await createClient();
 
+  // A validação do Zod no cliente já deve pegar isso, mas é bom ter uma segurança no servidor.
   if (password !== confirm_password) {
-    return redirect('/auth?message=As senhas não coincidem.');
+    // ALTERADO: Redireciona para /register
+    return redirect('/register?message=As senhas não coincidem.');
   }
 
   const { error } = await supabase.auth.signUp({
@@ -50,8 +52,10 @@ export async function signup(formData) {
   });
 
   if (error) {
-    return redirect(`/auth?message=Não foi possível registrar o usuário. ${error.message}`);
+    // ALTERADO: Redireciona para /register com a mensagem de erro específica
+    return redirect(`/register?message=Não foi possível registrar o usuário. ${error.message}`);
   }
 
-  return redirect('/auth?message=Verifique seu e-mail para validar a conta!');
+  // ALTERADO: Redireciona para /login com uma mensagem de sucesso
+  return redirect('/login?message=Verifique seu e-mail para validar a conta!');
 }

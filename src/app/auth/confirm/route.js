@@ -8,10 +8,11 @@ export async function GET(request) {
   const type = searchParams.get('type');
   const next = searchParams.get('next') ?? '/dashboard';
 
-  const redirectTo = new URL('/auth', request.url);
+  // ALTERADO: A rota de fallback agora é /login
+  const redirectTo = new URL('/login', request.url);
 
   if (token_hash && type) {
-    const supabase = await createClient(); // ✅ await aqui
+    const supabase = await createClient();
 
     const { error } = await supabase.auth.verifyOtp({
       type,
@@ -24,10 +25,12 @@ export async function GET(request) {
     }
 
     console.error('Auth Confirmation Error:', error.message);
+    // ALTERADO: Redireciona para /login com a mensagem de erro
     redirectTo.searchParams.set('message', `Erro ao confirmar e-mail: ${error.message}`);
     return NextResponse.redirect(redirectTo);
   }
 
+  // ALTERADO: Redireciona para /login se o link for inválido
   redirectTo.searchParams.set('message', 'Link de confirmação inválido ou expirado.');
   return NextResponse.redirect(redirectTo);
 }

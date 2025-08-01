@@ -6,7 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useFormStatus } from 'react-dom';
 import { Input, Typography, Button } from '@material-tailwind/react';
 import { User, Mail, Lock } from 'iconoir-react';
-import { signup } from './actions';
+import { signup } from '@/app/auth/actions';
 
 // Esquema de validação com Zod
 const signupSchema = z
@@ -29,7 +29,7 @@ function SubmitButton() {
     <Button
       type="submit"
       disabled={pending}
-      className="mt-6 w-full rounded-lg bg-indigo-500 py-3 px-4 font-semibold text-white shadow-md transition-all duration-300 enabled:hover:bg-indigo-600 enabled:focus:ring-2 enabled:focus:ring-indigo-500 enabled:focus:ring-offset-2 enabled:focus:ring-offset-gray-800 disabled:bg-indigo-400"
+      className="mt-6 w-full rounded-lg bg-secondary py-3 px-4 font-semibold text-white shadow-md transition-all duration-300 enabled:hover:bg-secondary-dark enabled:focus:ring-2 enabled:focus:ring-secondary enabled:focus:ring-offset-2 enabled:focus:ring-offset-white disabled:bg-secondary/60"
     >
       {pending ? (
         <div className="flex items-center justify-center">
@@ -71,125 +71,120 @@ export default function SignupForm() {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
       <div>
-        <label htmlFor="first-name" className="block text-sm font-medium text-gray-300 mb-1">
+        <label htmlFor="first-name" className="block text-sm font-medium text-primary mb-1">
           Nome
         </label>
         <div className="relative">
-          <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
+          <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-info">
             <User className="h-5 w-5" />
           </div>
           <Input
             id="first-name"
             type="text"
             placeholder="Seu nome"
-            isError={Boolean(errors.first_name)}
-            color={errors.first_name ? 'error' : 'default'}
+            error={errors.first_name ? true : undefined}
             className="w-full pl-10"
             {...register('first_name')}
           />
         </div>
         {errors.first_name && (
-          <Typography type="small" color="error" className="mt-1 block">
+          <Typography variant="small" color="red" className="mt-1 block">
             {errors.first_name.message}
           </Typography>
         )}
       </div>
 
       <div>
-        <label htmlFor="last-name" className="block text-sm font-medium text-gray-300 mb-1">
+        <label htmlFor="last-name" className="block text-sm font-medium text-primary mb-1">
           Sobrenome
         </label>
         <div className="relative">
-          <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
+          <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-info">
             <User className="h-5 w-5" />
           </div>
           <Input
             id="last-name"
             type="text"
             placeholder="Seu sobrenome"
-            isError={Boolean(errors.last_name)}
-            color={errors.last_name ? 'error' : 'default'}
+            error={errors.last_name ? true : undefined}
             className="w-full pl-10"
             {...register('last_name')}
           />
         </div>
         {errors.last_name && (
-          <Typography type="small" color="error" className="mt-1 block">
+          <Typography variant="small" color="red" className="mt-1 block">
             {errors.last_name.message}
           </Typography>
         )}
       </div>
 
       <div>
-        <label htmlFor="email-signup" className="block text-sm font-medium text-gray-300 mb-1">
+        <label htmlFor="email-signup" className="block text-sm font-medium text-primary mb-1">
           Email
         </label>
         <div className="relative">
-          <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
+          <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-info">
             <Mail className="h-5 w-5" />
           </div>
           <Input
             id="email-signup"
             type="email"
             placeholder="seu@email.com"
-            isError={Boolean(errors.email)}
-            color={errors.email ? 'error' : 'default'}
+            error={errors.email ? true : undefined}
             className="w-full pl-10"
             {...register('email')}
           />
         </div>
         {errors.email && (
-          <Typography type="small" color="error" className="mt-1 block">
+          <Typography variant="small" color="red" className="mt-1 block">
             {errors.email.message}
           </Typography>
         )}
       </div>
       
       <div>
-        <label htmlFor="password-signup" className="block text-sm font-medium text-gray-300 mb-1">
+        <label htmlFor="password-signup" className="block text-sm font-medium text-primary mb-1">
           Senha
         </label>
         <div className="relative">
-          <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
+          <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-info">
             <Lock className="h-5 w-5" />
           </div>
           <Input
             id="password-signup"
             type="password"
             placeholder="******"
-            isError={Boolean(errors.password)}
-            color={errors.password ? 'error' : 'default'}
+            error={errors.password ? true : undefined}
             className="w-full pl-10"
             {...register('password')}
           />
         </div>
         {errors.password && (
-          <Typography type="small" color="error" className="mt-1 block">
+          <Typography variant="small" color="red" className="mt-1 block">
             {errors.password.message}
           </Typography>
         )}
       </div>
       
       <div>
-        <label htmlFor="confirm-password-signup" className="block text-sm font-medium text-gray-300 mb-1">
+        <label htmlFor="confirm-password-signup" className="block text-sm font-medium text-primary mb-1">
           Confirme a Senha
         </label>
         <div className="relative">
-          <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
+          <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-info">
             <Lock className="h-5 w-5" />
           </div>
           <Input
             id="confirm-password-signup"
             type="password"
             placeholder="******"
-            isError={Boolean(errors.confirm_password)}
-            color={errors.confirm_password ? 'error' : 'default'}
+            error={errors.confirm_password ? true : undefined}
             className="w-full pl-10"
             {...register('confirm_password')}
           />
         </div>
         {errors.confirm_password && (
-          <Typography type="small" color="error" className="mt-1 block">
+          <Typography variant="small" color="red" className="mt-1 block">
             {errors.confirm_password.message}
           </Typography>
         )}
