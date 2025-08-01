@@ -52,16 +52,15 @@ export default async function Home() {
                     <AnimatedSection delay={0.1}>
                         <Typography
                             type="h1"
-                            color="primary"
-                            className="text-3xl md:text-5xl lg:text-6xl font-extrabold leading-tight"
+                            className="text-3xl md:text-5xl lg:text-6xl font-extrabold leading-tight text-secondary-dark"
                         >
                             A ferramenta definitiva para a organização da sua igreja
                         </Typography>
-                        <Typography type="lead" className="text-base md:text-xl my-6 text-gray-700">
+                        <Typography type="lead" className="md:text-xl my-6 text-neutral-800">
                             Simplifique a gestão da sua igreja com um sistema intuitivo para
                             eventos, escalas e comunicação interna. Organize tudo em um só lugar.
                         </Typography>
-                        <Button size="lg">
+                        <Button size="lg" variant="solid" color="secondary" className="bg-surface-dark border-surface-dark hover:bg-neutral-700 hover:border-neutral-700">
                             COMECE GRÁTIS
                         </Button>
                     </AnimatedSection>

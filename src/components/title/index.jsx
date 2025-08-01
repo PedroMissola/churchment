@@ -8,8 +8,8 @@ export default function Title({
     // Uma forma simples de gerar um ID único para acessibilidade
     const titleId = `title-${title?.toLowerCase().replace(/\s+/g, '-')}`;
 
-    const titleColorClass = color === 'white' ? 'text-white' : 'text-primary';
-    const subtitleColorClass = color === 'white' ? 'text-gray-200' : 'text-primary-light';
+    const titleColorClass = color === 'white' ? 'text-surface-light' : 'text-secondary-dark';
+    const subtitleColorClass = color === 'white' ? 'text-surface' : 'text-secondary';
 
     return (
         <div

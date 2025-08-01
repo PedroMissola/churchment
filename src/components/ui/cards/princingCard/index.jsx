@@ -50,16 +50,16 @@ export default function PricingCard({
   const showFree = isFree || normalize(price) === normalize(freeLabel);
 
   // Classes condicionais para cores
-  const cardBgClass = isDark ? "bg-[#212121]" : "bg-white";
-  const cardBorderClass = isDark ? "border-transparent" : "border-gray-200";
-  const titleClass = isDark ? "text-white" : "text-primary";
+  const cardBgClass = isDark ? "bg-neutral-950" : "bg-neutral-50";
+  const cardBorderClass = isDark ? "border-transparent" : "border-neutral-200";
+  const titleClass = isDark ? "text-surface-light" : "text-surface-dark";
   const subtitleClass = isDark ? "text-neutral-300" : "text-neutral-700";
-  const priceClass = isDark ? "text-white" : "text-primary";
-  const cycleClass = isDark ? "text-neutral-400" : "text-neutral-600";
+  const priceClass = isDark ? "text-primary" : "text-secondary-dark";
+  const cycleClass = isDark ? "text-primary-light" : "text-neutral-600";
   const oldText = isDark ? "text-neutral-400 line-through" : "text-neutral-500 line-through";
-  const includedIconColor = isDark ? "text-secondary-light" : "text-secondary";
-  const excludedIconColor = isDark ? "text-primary-foreground" : "text-primary-light";
-  const btnClass = isDark ? "bg-white text-primary" : "bg-primary text-white";
+  const includedIconColor = isDark ? "text-neutral-300" : "text-secondary-dark";
+  const excludedIconColor = isDark ? "text-neutral-600" : "text-neutral-500";
+  const btnClass = isDark ? "bg-primary-dark text-white border-primary-dark hover:bg-orange-500 hover:border-orange-500" : "bg-surface-dark border-surface-dark hover:bg-neutral-700 hover:border-neutral-700";
   const btnPropsColor = isDark ? { color: "white" } : { color: "primary" };
 
   return (
@@ -68,7 +68,7 @@ export default function PricingCard({
       data-dark={isDark} // Adicionado para estilização mais flexível com data attributes
     >
       {/* Cabeçalho do Card */}
-      <div className="flex flex-col gap-2 border-b border-gray-200 pb-4">
+      <div className="flex flex-col gap-2 border-b border-neutral-200 pb-4">
         <Typography type="h5" className={`font-semibold ${titleClass}`}>
           {title}
         </Typography>
@@ -114,7 +114,7 @@ export default function PricingCard({
                 ) : (
                   <MinusCircle className={`mt-0.5 h-6 w-6 shrink-0 ${excludedIconColor}`} />
                 )}
-                <Typography className={included ? (isDark ? "text-white" : "text-[#171717]") : (isDark ? "text-neutral-400" : "text-neutral-600")}>
+                <Typography className={included ? (isDark ? "text-white" : "text-[#171717]") : (isDark ? "text-neutral-600" : "text-neutral-500")}>
                   {item.text}
                 </Typography>
               </li>
@@ -129,6 +129,7 @@ export default function PricingCard({
           href={href}
           isFullWidth
           size="lg"
+          variant="solid"
           className={btnClass}
           {...btnPropsColor}
         >
@@ -138,6 +139,7 @@ export default function PricingCard({
         <Button
           isFullWidth
           size="lg"
+          variant="solid"
           className={btnClass}
           onClick={onCtaClick}
           {...btnPropsColor}

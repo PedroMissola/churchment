@@ -53,7 +53,7 @@ export default function FeatureCard({
 
             <div className={`w-full md:w-1/2 flex flex-col gap-4 md:gap-8 ${isReversed ? "md:items-end" : ""}`}>
                 {/* Título: 24px em mobile, tamanho original em desktop */}
-                <Typography variant="h3" className={`text-2xl md:text-4xl font-semibold ${isReversed ? "md:text-right" : ""} text-left`} color="primary">
+                <Typography variant="h3" className={`text-2xl md:text-4xl font-semibold text-secondary-dark ${isReversed ? "md:text-right" : ""} text-left`}>
                     {title}
                 </Typography>
                 {/* Descrição: 14px em mobile, tamanho original em desktop */}
@@ -67,8 +67,7 @@ export default function FeatureCard({
                 <div className={`flex flex-wrap md:flex-row gap-2 md:gap-4 ${isReversed ? "md:justify-end" : ""} text-left md:text-left`}>
                     {feature_one && (
                         <Typography
-                            className={`text-xs md:text-sm ${isReversed ? "md:text-right" : ""} text-left`}
-                            color="secondary"
+                            className={`text-xs md:text-sm text-primary-dark ${isReversed ? "md:text-right" : ""} text-left`}
                         >
                             {feature_one}
                         </Typography>
@@ -76,8 +75,7 @@ export default function FeatureCard({
 
                     {feature_two && (
                         <Typography
-                            className={`text-xs md:text-sm ${isReversed ? "md:text-right" : ""} text-left`}
-                            color="secondary"
+                            className={`text-xs md:text-sm text-primary-dark ${isReversed ? "md:text-right" : ""} text-left`}
                         >
                             {feature_two}
                         </Typography>
@@ -85,8 +83,7 @@ export default function FeatureCard({
 
                     {feature_three && (
                         <Typography
-                            className={`text-xs md:text-sm ${isReversed ? "md:text-right" : ""} text-left`}
-                            color="secondary"
+                            className={`text-xs md:text-sm text-primary-dark ${isReversed ? "md:text-right" : ""} text-left`}
                         >
                             {feature_three}
                         </Typography>
@@ -94,7 +91,8 @@ export default function FeatureCard({
                 </div>
 
                 <Button
-                    className={`w-fit uppercase self-start ${isReversed ? "md:self-end" : ""}`}
+                    className={`w-fit uppercase self-start bg-surface-dark border-surface-dark hover:bg-neutral-700 hover:border-neutral-700 ${isReversed ? "md:self-end" : ""}`}
+                    color="secondary"
                     size={buttonSize} // Usa o estado para definir o tamanho do botão
                 >
                     {buttonText}

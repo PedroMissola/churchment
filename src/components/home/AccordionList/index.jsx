@@ -40,7 +40,7 @@ export default function AccordionList({
               {animateItems ? (
                 <AnimatedSection delay={d}>
                   <div className="flex w-full items-center justify-between gap-3">
-                    <Typography className="text-base font-bold">{title}</Typography>
+                    <Typography className="text-base font-bold text-secondary-dark">{title}</Typography>
                     {icon ? (
                       <span className="shrink-0">{icon}</span>
                     ) : showChevron ? (
@@ -50,7 +50,7 @@ export default function AccordionList({
                 </AnimatedSection>
               ) : (
                 <>
-                  <Typography className="text-base font-bold">{title}</Typography>
+                  <Typography className="text-base font-bold text-secondary-dark">{title}</Typography>
                   {icon ? (
                     <span className="shrink-0">{icon}</span>
                   ) : showChevron ? (
@@ -60,7 +60,7 @@ export default function AccordionList({
               )}
             </Accordion.Trigger>
 
-            <Accordion.Content className="pb-4 text-base text-gray-700">
+            <Accordion.Content className="pb-4 text-base text-neutral-700">
               {animateItems ? (
                 <AnimatedSection delay={d + 0.05}>
                   {content}

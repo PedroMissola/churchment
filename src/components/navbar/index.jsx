@@ -40,7 +40,7 @@ function NavList({ onLinkClick }) {
             as="a"
             href={href}
             type="p"
-            className="flex items-center gap-x-2 p-1 hover:text-primary"
+            className="flex items-center gap-x-2 p-1 text-secondary-dark hover:text-secondary"
             onClick={onLinkClick} // Adiciona o manipulador de clique para fechar o menu
           >
             {title}
@@ -85,13 +85,13 @@ export default function NavbarDemo() {
   const toggleMobileMenu = () => setIsMobileMenuOpen(!isMobileMenuOpen);
 
   return (
-    <Navbar className="w-full border-transparent shadow-none px-9 md:px-18 py-4">
+    <Navbar className="w-full border-transparent shadow-none px-6 md:px-18 py-4">
       <div className="flex justify-between items-center">
         <Typography
           as="a"
           href="#"
           type="lead"
-          className="text-lg ml-2 mr-2 block py-1 font-semibold"
+          className="text-lg ml-2 mr-2 block py-1 font-semibold text-secondary-dark"
         >
           Churchment
         </Typography>
@@ -101,17 +101,22 @@ export default function NavbarDemo() {
         <div className="space-x-2">
           <Button
             size="sm"
-            className="hidden lg:inline-block"
+            className="hidden lg:inline-block text-secondary-dark hover:bg-neutral-700 hover:text-secondary-foreground border-surface-dark hover:border-neutral-700"
+            color="secondary"
             variant="outline"
+            as="a"
+            href="/login"
           >
-            Sign In
+            Logar
           </Button>
           <Button
             size="sm"
             className="hidden lg:inline-block"
             variant="gradient"
+            as="a"
+            href="/register"
           >
-            Register
+            Registrar-se
           </Button>
         </div>
         {/* Botão Mobile */}
@@ -126,8 +131,11 @@ export default function NavbarDemo() {
       {/* Menu Mobile */}
       <Collapse open={isMobileMenuOpen} ref={mobileMenuRef}>
         <NavList onLinkClick={() => setIsMobileMenuOpen(false)} />
-        <Button isFullWidth size="sm" className="mt-4">
-          Sign In
+        <Button isFullWidth size="sm" variant="outline" as="a" href="/login" className="mt-4 text-secondary-dark hover:bg-neutral-700 hover:text-secondary-foreground border-surface-dark hover:border-neutral-700">
+          Logar
+        </Button>
+        <Button isFullWidth size="sm" className="mt-4" variant="gradient" as="a" href="/register">
+          Registrar-se
         </Button>
       </Collapse>
     </Navbar>

@@ -26,14 +26,14 @@ export function ToggleSwitch({ value = "annual", onChange }) {
   return (
     <Tabs value={current} className="mx-auto">
       <Tabs.List
-        className="w-fit rounded-xl bg-gray-100 p-1"
+        className="w-fit rounded-xl bg-neutral-100 p-1"
       >
         {/* O antigo Tab agora é Tabs.Trigger */}
         <Tabs.Trigger
           value="annual"
           onClick={() => handleChange("annual")}
           className={`px-8 py-2 rounded-xl transition-colors duration-200 text-base font-semibold ${ 
-            current === "annual" ? "text-gray-900" : "text-gray-500"
+            current === "annual" ? "text-neutral-800" : "text-neutral-500"
           }`}
         >
           Anual
@@ -43,7 +43,7 @@ export function ToggleSwitch({ value = "annual", onChange }) {
           value="monthly"
           onClick={() => handleChange("monthly")}
           className={`px-8 py-2 rounded-xl transition-colors duration-200 text-base font-medium ${ // Classes para o rótulo "Mensal"
-            current === "monthly" ? "text-gray-900" : "text-gray-500" // Cor do texto baseada na seleção
+            current === "monthly" ? "text-neutral-800" : "text-neutral-500" // Cor do texto baseada na seleção
           }`}
         >
           Mensal

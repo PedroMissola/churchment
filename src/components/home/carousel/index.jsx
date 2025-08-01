@@ -42,7 +42,7 @@ export default function LogoCarousel() {
 
   return (
     <section className="py-[36px] px-4 sm:px-6 md:px-8 flex flex-col text-center" role="region" aria-label="Carousel de Logos de Igrejas">
-      <Typography type='h6' color='primary'>
+      <Typography type='h3' className="text-secondary-dark text-xl">
         Já ajudamos igrejas ao redor do mundo a se organizarem melhor.
       </Typography>
 

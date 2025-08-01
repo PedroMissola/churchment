@@ -39,7 +39,7 @@ const LINKS = [
 
 export default function Footer() {
   return (
-    <footer className="w-full bg-primary text-white" role="contentinfo">
+    <footer className="w-full bg-surface-dark text-white" role="contentinfo">
       <div className="mx-auto w-full max-w-7xl px-6 sm:px-8 py-16">
         {/* Topo */}
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
