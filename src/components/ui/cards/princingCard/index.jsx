@@ -68,7 +68,7 @@ export default function PricingCard({
       data-dark={isDark} // Adicionado para estilização mais flexível com data attributes
     >
       {/* Cabeçalho do Card */}
-      <div className="flex flex-col gap-2 border-b border-neutral-200 pb-4">
+      <div className="flex flex-col gap-2">
         <Typography type="h5" className={`font-semibold ${titleClass}`}>
           {title}
         </Typography>
@@ -91,7 +91,7 @@ export default function PricingCard({
 
       {/* Preço Antigo (se houver e não for grátis) */}
       {!showFree && oldPrice && (
-        <div className="mb-4 text-sm">
+        <div className="text-sm">
           <span className={`text-base ${oldText}`}>
             De: {currency}{oldPrice}
             <span className={`ml-1 align-middle text-xs ${oldText}`}>
