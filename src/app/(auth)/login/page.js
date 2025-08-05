@@ -28,9 +28,6 @@ function LoginForm() {
     resolver: zodResolver(loginSchema),
   });
 
-  // Observa o campo de email para verificar emails descartáveis
-  const watchedEmail = watch('email');
-
   // Verifica email descartável em tempo real
   const handleEmailChange = (e) => {
     const email = e.target.value;

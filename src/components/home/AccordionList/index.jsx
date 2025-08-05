@@ -3,7 +3,7 @@
 
 import { Accordion, Typography } from "@material-tailwind/react";
 import { NavArrowDown } from "iconoir-react";
-import AnimatedSection from "../../animatedSection";
+import AnimatedSection from "../../layout/animatedSection";
 
 /**
  * Props novas:

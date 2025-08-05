@@ -7,7 +7,23 @@ const config = {
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
     "./node_modules/@material-tailwind/react/**/*.{js,ts,jsx,tsx}",
   ],
-  theme: {},
+  theme: {
+    extend: {
+      keyframes: {
+        typewriter: {
+          '0%': { width: '0' },
+          '100%': { width: '100%' },
+        },
+        blink: {
+          '50%': { 'border-color': 'transparent' },
+        },
+      },
+      animation: {
+        typewriter: 'typewriter 2s steps(30, end) forwards',
+        'typewriter-blink': 'typewriter 2s steps(30, end) forwards, blink 0.8s step-end infinite',
+      },
+    },
+  },
   plugins: [
     mtConfig({
       radius: "1.5rem",

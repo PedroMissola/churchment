@@ -9,7 +9,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { signup } from '@/lib/auth/actions'; // ✅ Caminho corrigido
 import AuthMessage from '@/components/auth/authmessage';
-import { signupSchema, analyzePassword, getUserInputs } from '@/lib/utils/validations';
+import { signupFormSchema, analyzePassword, getUserInputs } from '@/lib/utils/validations';
 
 function PasswordStrengthIndicator({ password, userInputs = [] }) {
   if (!password) return null;
@@ -63,7 +63,7 @@ function SignupForm() {
     watch,
     formState: { errors },
   } = useForm({
-    resolver: zodResolver(signupSchema),
+    resolver: zodResolver(signupFormSchema),
   });
 
   const watchedValues = watch();

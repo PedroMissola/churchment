@@ -12,16 +12,16 @@ export default function AuthMessage() {
   useEffect(() => {
     const error = searchParams.get('error');
     const success = searchParams.get('success');
-    const message = searchParams.get('message');
+    const info = searchParams.get('message');
 
     if (error) {
-      setMessage(error);
+      setMessage(decodeURIComponent(error));
       setType('error');
     } else if (success) {
-      setMessage(success);
+      setMessage(decodeURIComponent(success));
       setType('success');
-    } else if (message) {
-      setMessage(message);
+    } else if (info) {
+      setMessage(decodeURIComponent(info));
       setType('info');
     } else {
       setMessage('');
@@ -39,7 +39,7 @@ export default function AuthMessage() {
 
   return (
     <div className={`border rounded-lg p-3 ${styles[type]}`}>
-      <Typography type="small" className="font-medium">
+      <Typography variant="small" className="font-medium">
         {message}
       </Typography>
     </div>

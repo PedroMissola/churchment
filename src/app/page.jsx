@@ -1,15 +1,15 @@
 // app/page.jsx — SERVER COMPONENT (sem 'use client')
 import LogoCarousel from "@/components/home/carousel";
 import FeatureCard from "@/components/home/featureContent";
-import NavbarDemo from "@/components/navbar";
+import NavbarDemo from "@/components/layout/navbar";
 import { Button, Typography } from "@material-tailwind/react";
 import Image from "next/image";
-import Title from "@/components/title";
-import AnimatedSection from "@/components/animatedSection";
+import Title from "@/components/layout/title";
+import AnimatedSection from "@/components/layout/animatedSection";
 import TestimonialCard from "@/components/ui/cards/card";
 import AccordionList from "@/components/home/AccordionList";
-import Cta from "@/components/cta";
-import Footer from "@/components/footer";
+import Cta from "@/components/layout/cta";
+import Footer from "@/components/layout/footer";
 import PricingSection from "@/components/home/princingsection";
 
 export const metadata = {

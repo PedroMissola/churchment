@@ -4,8 +4,8 @@
 import { useState } from "react";
 import PricingCard from "@/components/ui/cards/princingCard"; // Caminho ajustado
 import { ToggleSwitch } from "@/components/ui/toggleswitch"; // Caminho ajustado
-import Title from "@/components/title"; // Importe se o `Title` for um componente separado
-import AnimatedSection from "@/components/animatedSection"; // Importe se o `AnimatedSection` for um componente separado
+import Title from "@/components/layout/title"; // Importe se o `Title` for um componente separado
+import AnimatedSection from "@/components/layout/animatedSection"; // Importe se o `AnimatedSection` for um componente separado
 
 const PLANS = {
   basic: {
