@@ -1,101 +1,61 @@
-'use client';
+'use client'
 
-import { Typography, Button } from '@material-tailwind/react';
+import { Spinner, Typography, Progress } from '@material-tailwind/react';
+import { useEffect, useState } from 'react';
+
+// Mensagens criativas e otimizadas
+const messages = [
+    'Estamos buscando os melhores produtos para você...',
+    'Quase pronto! Sua experiência será incrível.',
+    'Otimizando a página para um carregamento super rápido...',
+    'Conectando os dados com segurança e eficiência...',
+    'Agradecemos a sua paciência. Já estamos finalizando!'
+];
 
 export default function Loading() {
-  return (
-    <div className="bg-gray-50 min-h-screen px-4 md:px-18 py-12 md:py-24 space-y-12 animate-pulse">
-      {/* Navbar Skeleton */}
-      <div className="flex justify-between items-center">
-        <div className="w-32 h-10 rounded-lg bg-gray-300" />
-        <div className="w-24 h-8 rounded-lg bg-gray-300" />
-      </div>
+    const [currentMessageIndex, setCurrentMessageIndex] = useState(0);
 
-      {/* Header Section Skeleton */}
-      <div className="flex flex-col md:flex-row items-center gap-8">
-        {/* Texto */}
-        <div className="w-full md:w-1/2 space-y-6">
-          <Typography as="div" className="h-12 w-full max-w-lg rounded-full bg-gray-300">&nbsp;</Typography>
-          <Typography as="div" className="h-6 w-full max-w-md rounded-full bg-gray-300">&nbsp;</Typography>
-          <div className="h-12 w-40 rounded-lg bg-gray-300" />
-        </div>
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setCurrentMessageIndex((prev) => (prev + 1) % messages.length);
+        }, 4000); // Muda a mensagem a cada 4 segundos
 
-        {/* Imagem */}
-        <div className="w-full md:w-1/2 flex justify-center">
-          <div className="w-full max-w-lg h-64 rounded-xl bg-gray-300" />
-        </div>
-      </div>
+        return () => clearInterval(interval);
+    }, []);
 
-      {/* LogoCarousel Skeleton */}
-      <div className="w-full h-20 rounded-lg bg-gray-300" />
+    return (
+        <div className="fixed inset-0 bg-white flex items-center justify-center z-50 gap-4" role="status" aria-live="polite">
+            {/* Título escondido para SEO e acessibilidade */}
+            <h1 className="sr-only">Carregando a sua página</h1>
 
-      {/* Main Features Skeleton */}
-      <main role="main" aria-label="Conteúdo Principal" className="space-y-12">
-        {[1, 2, 3, 4].map((_, i) => (
-          <div
-            key={i}
-            className={`flex flex-col md:flex-row items-center gap-8 ${
-              i % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'
-            }`}
-          >
-            <div className="w-full md:w-1/2 h-48 rounded-xl bg-gray-300" />
-            <div className="w-full md:w-1/2 space-y-4">
-              <Typography as="div" className="h-8 w-3/4 rounded-full bg-gray-300">&nbsp;</Typography>
-              <Typography as="div" className="h-6 w-full rounded-full bg-gray-300">&nbsp;</Typography>
-              <Typography as="div" className="h-6 w-5/6 rounded-full bg-gray-300">&nbsp;</Typography>
-              <div className="h-10 w-40 rounded-lg bg-gray-300" />
+            <div className="flex flex-col items-center space-y-6 p-8">
+                <div className="relative" aria-label="Carregando">
+                    <Spinner size="xxl" color="primary"/>
+                </div>
+
+                <div className="text-center space-y-3">
+                    <Typography
+                        variant="h6"
+                        color="secondary"
+                        className="font-semibold overflow-hidden whitespace-nowrap border-r-2 border-gray-800 inline-block
+                       animate-typewriter-blink"
+                        key={currentMessageIndex} // Chave para forçar a animação a reiniciar
+                    >
+                        {messages[currentMessageIndex]}
+                    </Typography>
+
+                    <div className="flex justify-center space-x-1" aria-hidden="true">
+                        <div className="w-2 h-2 bg-deep-orange-500 rounded-full animate-bounce"></div>
+                        <div className="w-2 h-2 bg-deep-orange-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
+                        <div className="w-2 h-2 bg-deep-orange-300 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+                    </div>
+                </div>
+
+                <div className="w-64" aria-label="Barra de progresso">
+                    <Progress size="sm" color="primary" value={100} className="animate-pulse" />
+                </div>
+
             </div>
-          </div>
-        ))}
-      </main>
-
-      {/* Testimonials Skeleton */}
-      <section className="bg-gradient-to-b from-[#F4511E] to-[#FF7043] py-16 md:py-24 flex flex-col gap-8">
-        <Typography as="div" className="h-10 w-80 rounded-full bg-gray-300">&nbsp;</Typography>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {[1, 2, 3, 4].map((_, i) => (
-            <div key={i} className="space-y-4 p-4 rounded-lg bg-white">
-              <div className="w-16 h-16 rounded-full bg-gray-300" />
-              <Typography as="div" className="h-6 w-5/6 rounded-full bg-gray-300">&nbsp;</Typography>
-              <Typography as="div" className="h-4 w-3/4 rounded-full bg-gray-300">&nbsp;</Typography>
-              <Typography as="div" className="h-4 w-1/2 rounded-full bg-gray-300">&nbsp;</Typography>
-            </div>
-          ))}
         </div>
-      </section>
-
-      {/* PricingSection Skeleton */}
-      <div className="w-full h-40 rounded-lg bg-gray-300" />
-
-      {/* FAQ Skeleton */}
-      <section className="py-16 md:py-24 space-y-6">
-        <Typography as="div" className="h-10 w-64 rounded-full bg-gray-300">&nbsp;</Typography>
-        <div className="flex flex-col md:flex-row gap-12">
-          {[1, 2].map((_, i) => (
-            <div key={i} className="flex-1 space-y-4">
-              {[1, 2, 3, 4].map((__, j) => (
-                <Typography
-                  key={j}
-                  as="div"
-                  className="h-8 w-full rounded-full bg-gray-300"
-                >
-                  &nbsp;
-                </Typography>
-              ))}
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* CTA Skeleton */}
-      <div className="space-y-4 text-center">
-        <div className="h-10 w-96 mx-auto rounded-lg bg-gray-300" />
-        <div className="h-6 w-72 mx-auto rounded-lg bg-gray-300" />
-        <div className="h-12 w-56 mx-auto rounded-lg bg-gray-300" />
-      </div>
-
-      {/* Footer Skeleton */}
-      <div className="w-full h-32 rounded-lg mt-12 bg-gray-300" />
-    </div>
-  );
+    );
 }
