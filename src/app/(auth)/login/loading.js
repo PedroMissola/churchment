@@ -1,64 +1,61 @@
-'use client';
+'use client'
 
-import { Typography } from '@material-tailwind/react';
+import { Spinner, Typography, Progress } from '@material-tailwind/react';
+import { useEffect, useState } from 'react';
 
-export default function LoginLoading() {
-  return (
-    <form className="space-y-4 animate-pulse">
-      {/* Mensagem de erro */}
-      <div className="h-12 rounded-lg bg-red-200/60" />
+// Mensagens criativas e otimizadas
+const messages = [
+    'Estamos buscando os melhores produtos para você...',
+    'Quase pronto! Sua experiência será incrível.',
+    'Otimizando a página para um carregamento super rápido...',
+    'Conectando os dados com segurança e eficiência...',
+    'Agradecemos a sua paciência. Já estamos finalizando!'
+];
 
-      {/* Input de Email */}
-      <div className="space-y-1">
-        <Typography
-          as="div"
-          className="h-4 w-20 rounded-full bg-gray-300 mb-1"
-        >
-          &nbsp;
-        </Typography>
-        <div className="h-12 w-full rounded-lg bg-gray-300" />
-        <div className="h-4 w-40 rounded-full bg-gray-300 mt-1" />
-      </div>
+export default function Loading() {
+    const [currentMessageIndex, setCurrentMessageIndex] = useState(0);
 
-      {/* Input de Senha */}
-      <div className="space-y-1">
-        <div className="flex justify-between items-center">
-          <Typography
-            as="div"
-            className="h-4 w-24 rounded-full bg-gray-300 mb-1"
-          >
-            &nbsp;
-          </Typography>
-          <div className="h-4 w-28 rounded-full bg-gray-300 mb-1" />
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setCurrentMessageIndex((prev) => (prev + 1) % messages.length);
+        }, 4000); // Muda a mensagem a cada 4 segundos
+
+        return () => clearInterval(interval);
+    }, []);
+
+    return (
+        <div className="fixed inset-0 bg-white flex items-center justify-center z-50 gap-4" role="status" aria-live="polite">
+            {/* Título escondido para SEO e acessibilidade */}
+            <h1 className="sr-only">Carregando a sua página</h1>
+
+            <div className="flex flex-col items-center space-y-6 p-8">
+                <div className="relative" aria-label="Carregando">
+                    <Spinner size="xxl" color="primary"/>
+                </div>
+
+                <div className="text-center space-y-3">
+                    <Typography
+                        variant="h6"
+                        color="secondary"
+                        className="font-semibold overflow-hidden whitespace-nowrap border-r-2 border-gray-800 inline-block
+                       animate-typewriter-blink"
+                        key={currentMessageIndex} // Chave para forçar a animação a reiniciar
+                    >
+                        {messages[currentMessageIndex]}
+                    </Typography>
+
+                    <div className="flex justify-center space-x-1" aria-hidden="true">
+                        <div className="w-2 h-2 bg-deep-orange-500 rounded-full animate-bounce"></div>
+                        <div className="w-2 h-2 bg-deep-orange-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
+                        <div className="w-2 h-2 bg-deep-orange-300 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+                    </div>
+                </div>
+
+                <div className="w-64" aria-label="Barra de progresso">
+                    <Progress size="sm" color="primary" value={100} className="animate-pulse" />
+                </div>
+
+            </div>
         </div>
-        <div className="relative">
-          <div className="h-12 w-full rounded-lg bg-gray-300 pr-12" />
-          <div className="absolute right-3 top-1/2 -translate-y-1/2 h-5 w-5 rounded-full bg-gray-400" />
-        </div>
-        <div className="h-4 w-40 rounded-full bg-gray-300 mt-1" />
-      </div>
-
-      {/* Checkbox */}
-      <div className="flex items-center gap-2">
-        <div className="h-5 w-5 rounded border border-gray-300 bg-gray-300" />
-        <div>
-          <Typography as="div" className="h-4 w-32 rounded-full bg-gray-300" />
-          <Typography as="div" className="h-3 w-48 rounded-full bg-gray-300 mt-1" />
-        </div>
-      </div>
-
-      {/* Security Tips */}
-      <div className="bg-neutral-50 border border-neutral-200 rounded-lg p-3 space-y-2">
-        <Typography as="div" className="h-5 w-28 rounded-full bg-gray-300" />
-        <Typography as="div" className="h-4 w-full rounded-full bg-gray-300" />
-        <Typography as="div" className="h-4 w-5/6 rounded-full bg-gray-300" />
-        <Typography as="div" className="h-4 w-3/4 rounded-full bg-gray-300" />
-      </div>
-
-      {/* Botão */}
-      <div className="pt-4">
-        <div className="h-12 w-full rounded-lg bg-gray-300" />
-      </div>
-    </form>
-  );
+    );
 }
