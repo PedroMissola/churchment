@@ -1,7 +1,9 @@
+// authProvider.js - Versão atualizada com logout via API route
 'use client';
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { createClient } from '@/lib/supabase/client';
+import { useRouter } from 'next/navigation';
 
 const AuthContext = createContext();
 
@@ -9,6 +11,7 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const supabase = createClient();
+  const router = useRouter();
 
   useEffect(() => {
     let mounted = true;
@@ -86,10 +89,26 @@ export function AuthProvider({ children }) {
   const logout = async () => {
     setLoading(true);
     try {
-      const { error } = await supabase.auth.signOut();
-      if (error) throw error;
+      // Usar a API route para logout
+      const response = await fetch('/api/auth/logout', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.error || 'Erro ao fazer logout');
+      }
+
+      const result = await response.json();
       
       // O user será limpo automaticamente pelo onAuthStateChange
+      // Opcionalmente redirecionar para home
+      router.push('/?success=' + encodeURIComponent('Logout realizado com sucesso.'));
+      
+      return result;
     } catch (error) {
       console.error('Logout error:', error);
       throw error;

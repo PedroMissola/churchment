@@ -14,6 +14,16 @@ import { redirect } from 'next/navigation';
 
 // --- FUNÇÕES AUXILIARES ---
 
+const updatePasswordSchema = z.object({
+  password: z.string()
+    .min(6, 'A senha deve ter pelo menos 6 caracteres')
+    .max(100, 'A senha deve ter no máximo 100 caracteres'),
+  confirmPassword: z.string()
+}).refine((data) => data.password === data.confirmPassword, {
+  message: 'As senhas não coincidem',
+  path: ['confirmPassword'],
+});
+
 function logError(context, error) {
   console.error(`[${new Date().toISOString()}] [${context}]`, {
     message: error.message,
@@ -210,11 +220,11 @@ export async function validateSession() {
     return {
       user: user
         ? {
-            id: user.id,
-            email: user.email,
-            emailConfirmed: !!user.email_confirmed_at,
-            metadata: user.user_metadata,
-          }
+          id: user.id,
+          email: user.email,
+          emailConfirmed: !!user.email_confirmed_at,
+          metadata: user.user_metadata,
+        }
         : null,
       success: true,
       message: user ? 'Sessão válida.' : 'Nenhuma sessão ativa.',
@@ -273,6 +283,50 @@ export async function resendConfirmation(email) {
     };
   } catch (error) {
     logError('RESEND_CONFIRMATION', error);
+    throw new Error(getErrorMessage(error));
+  }
+}
+
+export async function updatePassword(data) {
+  try {
+    const headersList = await headers();
+    const ipAddress = headersList.get('x-forwarded-for') || headersList.get('x-real-ip') || '127.0.0.1';
+
+    if (!checkRateLimit(ipAddress)) {
+      throw new Error('Muitas tentativas. Tente novamente mais tarde.');
+    }
+
+    const { password } = updatePasswordSchema.parse(data);
+    const supabase = await createClient();
+
+    // Verificar se o usuário está autenticado (necessário para recovery)
+    const { data: { user }, error: userError } = await supabase.auth.getUser();
+
+    if (userError || !user) {
+      throw new Error('Sessão inválida. Solicite um novo link de recuperação.');
+    }
+
+    // Atualizar a senha
+    const { data: updateData, error } = await supabase.auth.updateUser({
+      password: password
+    });
+
+    if (error) throw error;
+
+    return {
+      success: true,
+      message: 'Senha atualizada com sucesso!',
+      user: {
+        id: updateData.user?.id,
+        email: updateData.user?.email,
+      },
+    };
+  } catch (error) {
+    logError('UPDATE_PASSWORD', error);
+    if (error instanceof z.ZodError) {
+      const firstError = error.errors[0];
+      throw new Error(firstError.message);
+    }
     throw new Error(getErrorMessage(error));
   }
 }

@@ -2,12 +2,12 @@
 
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Typography, Button, Spinner, Input, Checkbox } from '@material-tailwind/react';
+import { Typography, Button, Spinner, Input, Checkbox, Alert } from '@material-tailwind/react';
 import { Eye, EyeClosed } from 'iconoir-react';
 import { useState, Suspense, useTransition } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { signup } from '@/lib/auth/actions'; // ✅ Caminho corrigido
+import { signup } from '@/lib/auth/actions';
 import AuthMessage from '@/components/auth/authmessage';
 import { signupFormSchema, analyzePassword, getUserInputs } from '@/lib/utils/validations';
 
@@ -17,10 +17,10 @@ function PasswordStrengthIndicator({ password, userInputs = [] }) {
   const analysis = analyzePassword(password, userInputs);
 
   return (
-    <div className="mt-2 space-y-1">
+    <div className="mt-2 space-y-2">
       <div className="flex justify-between items-center">
         <Typography type="small" className="text-neutral-600">
-          Força da senha: <span style={{ color: analysis.color }}>{analysis.strength}</span>
+          Força: <span style={{ color: analysis.color }}>{analysis.strength}</span>
         </Typography>
         <Typography type="small" className="text-neutral-500">
           {analysis.crackTimeDisplay}
@@ -36,15 +36,15 @@ function PasswordStrengthIndicator({ password, userInputs = [] }) {
         />
       </div>
       {analysis.feedback.warning && (
-        <Typography type="small" color="error" className="mt-1">
+        <Typography type="small" color="error">
           {analysis.feedback.warning}
         </Typography>
       )}
-      {analysis.feedback.suggestions.length > 0 && (
-        <Typography type="small" className="text-neutral-600 mt-1">
+      {/* {analysis.feedback.suggestions.length > 0 && (
+        <Typography type="small" className="text-neutral-600">
           💡 {analysis.feedback.suggestions[0]}
         </Typography>
-      )}
+      )} */}
     </div>
   );
 }
@@ -53,7 +53,6 @@ function SignupForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [error, setError] = useState('');
-  const [success, setSuccess] = useState('');
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
 
@@ -71,14 +70,12 @@ function SignupForm() {
 
   const onSubmit = async (data) => {
     setError('');
-    setSuccess('');
-    
+
     startTransition(async () => {
       try {
-        // ✅ Envia objeto JavaScript com nomes corretos
         const signupData = {
-          firstName: data.first_name,  // ✅ Mapeia corretamente
-          lastName: data.last_name,    // ✅ Mapeia corretamente
+          firstName: data.first_name,
+          lastName: data.last_name,
           email: data.email,
           password: data.password,
           confirmPassword: data.confirm_password,
@@ -88,21 +85,8 @@ function SignupForm() {
         const result = await signup(signupData);
 
         if (result.success) {
-          setSuccess(result.message);
-          
-          // Se precisar de confirmação de email
-          if (result.requiresConfirmation) {
-            // Redireciona para página de confirmação ou mostra mensagem
-            setTimeout(() => {
-              router.push('/login?message=' + encodeURIComponent('Verifique seu e-mail para ativar a conta'));
-            }, 2000);
-          } else {
-            // Login automático realizado
-            setTimeout(() => {
-              router.push('/dashboard');
-              router.refresh();
-            }, 2000);
-          }
+          const verifyUrl = `/verify-email?email=${encodeURIComponent(data.email)}&success=${encodeURIComponent(result.message)}`;
+          router.push(verifyUrl);
         }
       } catch (error) {
         console.error('Signup error:', error);
@@ -112,8 +96,7 @@ function SignupForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
       {/* Mensagem de Erro */}
       {error && (
         <div className="bg-red-50 border border-red-200 rounded-lg p-3">
@@ -123,25 +106,14 @@ function SignupForm() {
         </div>
       )}
 
-      {/* Mensagem de Sucesso */}
-      {success && (
-        <div className="bg-green-50 border border-green-200 rounded-lg p-3">
-          <Typography type="small" className="text-green-800">
-            {success}
-          </Typography>
-        </div>
-      )}
-
-      {/* Inputs de Nome e Sobrenome - Lado a Lado */}
+      {/* Nome e Sobrenome */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {/* Input de Nome */}
-        <div className="space-y-1">
+        <div className="space-y-2">
           <Typography
             as="label"
             htmlFor="first-name"
             type="small"
-            color="default"
-            className="font-semibold"
+            className="font-semibold text-neutral-900"
           >
             Nome
           </Typography>
@@ -157,20 +129,18 @@ function SignupForm() {
             {...register('first_name')}
           />
           {errors.first_name && (
-            <Typography type="small" color="error" className="mt-1 block">
+            <Typography type="small" color="error">
               {errors.first_name.message}
             </Typography>
           )}
         </div>
 
-        {/* Input de Sobrenome */}
-        <div className="space-y-1">
+        <div className="space-y-2">
           <Typography
             as="label"
             htmlFor="last-name"
             type="small"
-            color="default"
-            className="font-semibold"
+            className="font-semibold text-neutral-900"
           >
             Sobrenome
           </Typography>
@@ -186,21 +156,20 @@ function SignupForm() {
             {...register('last_name')}
           />
           {errors.last_name && (
-            <Typography type="small" color="error" className="mt-1 block">
+            <Typography type="small" color="error">
               {errors.last_name.message}
             </Typography>
           )}
         </div>
       </div>
 
-      {/* Input de Email */}
-      <div className="space-y-1">
+      {/* Campo Email */}
+      <div className="space-y-2">
         <Typography
           as="label"
           htmlFor="email"
           type="small"
-          color="default"
-          className="font-semibold"
+          className="font-semibold text-neutral-900"
         >
           Email
         </Typography>
@@ -216,20 +185,19 @@ function SignupForm() {
           {...register('email')}
         />
         {errors.email && (
-          <Typography type="small" color="error" className="mt-1 block">
+          <Typography type="small" color="error">
             {errors.email.message}
           </Typography>
         )}
       </div>
 
-      {/* Input de Senha com Indicador de Força */}
-      <div className="space-y-1">
+      {/* Campo Senha */}
+      <div className="space-y-2">
         <Typography
           as="label"
           htmlFor="password"
           type="small"
-          color="default"
-          className="font-semibold"
+          className="font-semibold text-neutral-900"
         >
           Senha
         </Typography>
@@ -238,7 +206,7 @@ function SignupForm() {
             id="password"
             size="lg"
             type={showPassword ? "text" : "password"}
-            placeholder="********"
+            placeholder="Digite sua senha"
             isError={!!errors.password}
             color={errors.password ? "error" : "default"}
             className="w-full pr-12 border-neutral-200 shadow-none"
@@ -247,40 +215,37 @@ function SignupForm() {
           />
           <button
             type="button"
-            className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer hover:opacity-70 transition-opacity z-10"
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-neutral-500 hover:text-neutral-700 transition-colors"
             onClick={() => setShowPassword(!showPassword)}
-            tabIndex={-1}
             disabled={isPending}
           >
             {showPassword ? (
-              <EyeClosed className="h-5 w-5 text-gray-500" />
+              <EyeClosed className="h-5 w-5" />
             ) : (
-              <Eye className="h-5 w-5 text-gray-500" />
+              <Eye className="h-5 w-5" />
             )}
           </button>
         </div>
 
-        {/* Indicador de Força da Senha */}
         <PasswordStrengthIndicator
           password={watchedValues.password}
           userInputs={userInputs}
         />
 
         {errors.password && (
-          <Typography type="small" color="error" className="mt-1 block">
+          <Typography type="small" color="error">
             {errors.password.message}
           </Typography>
         )}
       </div>
 
-      {/* Input de Confirmar Senha */}
-      <div className="space-y-1">
+      {/* Confirmar Senha */}
+      <div className="space-y-2">
         <Typography
           as="label"
           htmlFor="confirm-password"
           type="small"
-          color="default"
-          className="font-semibold"
+          className="font-semibold text-neutral-900"
         >
           Confirme a senha
         </Typography>
@@ -289,7 +254,7 @@ function SignupForm() {
             id="confirm-password"
             size="lg"
             type={showConfirmPassword ? "text" : "password"}
-            placeholder="********"
+            placeholder="Confirme sua senha"
             isError={!!errors.confirm_password}
             color={errors.confirm_password ? "error" : "default"}
             className="w-full pr-12 border-neutral-200 shadow-none"
@@ -298,31 +263,30 @@ function SignupForm() {
           />
           <button
             type="button"
-            className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer hover:opacity-70 transition-opacity z-10"
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-neutral-500 hover:text-neutral-700 transition-colors"
             onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-            tabIndex={-1}
             disabled={isPending}
           >
             {showConfirmPassword ? (
-              <EyeClosed className="h-5 w-5 text-gray-500" />
+              <EyeClosed className="h-5 w-5" />
             ) : (
-              <Eye className="h-5 w-5 text-gray-500" />
+              <Eye className="h-5 w-5" />
             )}
           </button>
         </div>
         {errors.confirm_password && (
-          <Typography type="small" color="error" className="mt-1 block">
+          <Typography type="small" color="error">
             {errors.confirm_password.message}
           </Typography>
         )}
       </div>
 
-      {/* Checkbox "Termos e Condições" */}
-      <div className="space-y-1">
-        <div className="flex items-center gap-2">
-          <Checkbox 
-            id="checkbox-link" 
-            className="border-neutral-200" 
+      {/* Termos e Condições */}
+      <div className="space-y-2">
+        <div className="flex items-start gap-3">
+          <Checkbox
+            id="terms"
+            className="border-neutral-200 mt-0.5"
             disabled={isPending}
             {...register('terms')}
           >
@@ -330,109 +294,106 @@ function SignupForm() {
           </Checkbox>
           <Typography
             as="label"
-            htmlFor="checkbox-link"
-            className="cursor-pointer text-neutral-900 text-sm"
+            htmlFor="terms"
+            className="cursor-pointer text-neutral-900 text-sm flex-1"
           >
-            Eu aceito os &nbsp;
-            <Typography as="a" href="#" color="primary" className="inline text-sm font-medium">
+            Eu aceito os{' '}
+            <Typography as="a" href="#" color="primary" className="inline font-medium">
               termos e condições
             </Typography>
           </Typography>
         </div>
         {errors.terms && (
-          <Typography type="small" color="error" className="mt-1 block">
+          <Typography type="small" color="error">
             {errors.terms.message}
           </Typography>
         )}
       </div>
 
-      {/* Security Tips */}
-      <div className="bg-neutral-50 border border-neutral-200 rounded-lg p-3">
-        <Typography type="small" className="text-neutral-800 font-medium">
-          🔒 Dicas de Segurança:
-        </Typography>
-        <Typography type="small" className="text-neutral-700 mt-1">
-          <br />
-          • Crie uma senha única, usando letras, números e símbolos.
-          <br />
-          • Evite reutilizar senhas de outros sites ou serviços.
-          <br />
-          • Não faça o registro em redes Wi-Fi públicas ou não confiáveis.
-        </Typography>
-      </div>
+      {/* Dicas de Segurança */}
+      <Alert variant="ghost">
+        <Alert.Content className="mt-0.5">
+          <Typography>Dicas de Segurança</Typography>
+          <ul className="ml-2 mt-2 list-inside list-disc space-y-1">
+            <Typography as="li" type="small" className="list-item">
+              Crie uma senha única, usando letras, números e símbolos
+            </Typography>
+            <Typography as="li" type="small" className="list-item">
+              Evite reutilizar senhas de outros sites ou serviços
+            </Typography>
+            <Typography as="li" type="small" className="list-item">
+              Não faça o registro em redes Wi-Fi públicas
+            </Typography>
+          </ul>
+        </Alert.Content>
+      </Alert>
 
-      {/* Submit Button */}
-      <div className="pt-4">
-        <Button
-          type="submit"
-          disabled={isPending}
-          className="w-full bg-orange-500 hover:bg-orange-600 text-white font-medium py-3 px-4 rounded-lg transition-colors duration-200 disabled:bg-orange-300"
-        >
-          {isPending ? (
-            <div className="flex items-center justify-center gap-2">
-              <Spinner size='sm' className="text-white" />
-              <span>REGISTRANDO...</span>
-            </div>
-          ) : (
-            'CONTINUAR'
-          )}
-        </Button>
-      </div>
-
+      {/* Botão de Submit */}
+      <Button
+        type="submit"
+        disabled={isPending}
+        color="primary"
+        isFullWidth
+        size="lg"
+      >
+        {isPending ? (
+          <div className="flex items-center justify-center gap-2">
+            <Spinner size="sm" className="text-white" />
+            <span>Registrando...</span>
+          </div>
+        ) : (
+          'Continuar'
+        )}
+      </Button>
     </form>
   );
 }
 
 export default function RegisterPage() {
   return (
-    <>
-      <div className="flex min-h-screen items-center justify-center">
-        <div className="bg-white rounded-lg border border-neutral-200 p-6 w-full max-w-md mx-auto">
+    <div className="flex min-h-screen items-center justify-center p-4">
+      <div className="bg-white rounded-lg border border-neutral-200 p-6 w-full max-w-md">
+        <div className="space-y-8">
+          {/* Cabeçalho */}
+          <div className="space-y-2 text-center">
+            <Typography
+              type="h4"
+              as="h1"
+              className="text-neutral-900"
+            >
+              Registro
+            </Typography>
+            <Typography className="text-neutral-600 text-sm">
+              Crie sua nova conta gratuitamente
+            </Typography>
+          </div>
 
-          <div className="space-y-8">
+          <Suspense fallback={<div className="text-center text-neutral-400">Carregando...</div>}>
+            <AuthMessage />
+          </Suspense>
 
-            {/* Header */}
-            <div className="space-y-2">
-              <Typography
-                type="h1"
-                className="text-neutral-900 font-semibold lg:text-2xl"
+          <SignupForm />
+
+          {/* Rodapé */}
+          <div className="text-center space-y-3">
+            <Typography className="text-neutral-600 text-sm">
+              Já tem uma conta?{' '}
+              <Link
+                href="/login"
+                className="text-orange-500 hover:text-orange-600 font-medium transition-colors"
               >
-                Registro
-              </Typography>
-              <Typography
-                className="text-neutral-600 text-sm"
-              >
-                Crie sua nova conta gratuitamente
-              </Typography>
-            </div>
-
-            <Suspense fallback={<div className="text-center text-neutral-400">Carregando...</div>}>
-              <AuthMessage />
-            </Suspense>
-
-            <SignupForm />
-
-            {/* Footer */}
-            <div className="text-center space-y-1">
-              <Typography className="text-neutral-600 text-sm">
-                Já tem uma conta?{' '}
-                <Link
-                  href="/login"
-                  className="text-orange-500 hover:text-orange-600 font-medium transition-colors duration-200"
-                >
-                  Faça Login
-                </Link>
-              </Typography>
-              <Typography className="text-neutral-600 text-sm flex justify-center gap-2 font-medium">
-                <Link href="/">
-                  Voltar para o inicio
-                </Link>
-              </Typography>
-            </div>
-
+                Faça Login
+              </Link>
+            </Typography>
+            <Link
+              href="/"
+              className="text-neutral-600 text-sm font-medium hover:text-neutral-800 transition-colors"
+            >
+              Voltar para o início
+            </Link>
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }
