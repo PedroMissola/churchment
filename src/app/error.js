@@ -1,15 +1,15 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { Typography, Card, Alert } from '@material-tailwind/react';
+import { Typography, Card, Alert, Spinner, Button } from '@material-tailwind/react';
 import {
     WarningTriangle,
     Bug,
-    WarningCircle,
     InfoCircle,
     Settings,
     Copy,
-    Mail
+    Mail,
+    CheckCircle
 } from 'iconoir-react';
 import Link from 'next/link';
 
@@ -135,7 +135,7 @@ Viewport: ${debugInfo.viewport}
                 <div className="relative mb-6">
                     <div className="flex justify-center">
                         <div className="relative">
-                            <WarningTriangle className="h-24 w-24 text-error-dark animate-pulse" />
+                            <WarningTriangle className="h-24 w-24 text-error-dark" />
                         </div>
                     </div>
                 </div>
@@ -155,13 +155,14 @@ Viewport: ${debugInfo.viewport}
                         <div className="text-sm text-neutral-500">
                             {isLoading && (
                                 <div className="flex items-center justify-center gap-2">
-                                    <div className="animate-spin rounded-full h-4 w-4 border-2 border-blue-500 border-t-transparent"></div>
-                                    Enviando notificação...
+                                    <Spinner size="sm" color="info"/>
+                                    <Typography type="small" color="info">Enviando Notificação...</Typography>
                                 </div>
                             )}
                             {notificationSent && !isLoading && (
-                                <div className="text-green-600 flex items-center justify-center gap-2">
-                                    ✓ Equipe técnica notificada automaticamente
+                                <div className="flex items-center justify-center gap-2">
+                                    <CheckCircle className="text-success h-5 w-5"></CheckCircle>
+                                    <Typography type="small" color="sucess">Notificação enviada com sucesso!</Typography>
                                 </div>
                             )}
                         </div>
@@ -292,31 +293,41 @@ Viewport: ${debugInfo.viewport}
                 {/* Action buttons */}
                 <div className="mt-8">
                     <div className="flex flex-wrap justify-center gap-2 text-sm">
-                        <button
-                            className="inline-flex border font-sans font-medium text-center transition-all duration-300 ease-in disabled:opacity-50 disabled:shadow-none disabled:cursor-not-allowed text-sm rounded-md py-2 px-4 bg-blue-500 text-white hover:bg-blue-600 border-blue-500 hover:border-blue-600"
+                        <Button
+                            color="primary"
+                            variant="outline"
+                            size="md"
                             onClick={reset}
                         >
                             Tentar Novamente
-                        </button>
+                        </Button>
 
-                        <button
-                            className="inline-flex border font-sans font-medium text-center transition-all duration-300 ease-in disabled:opacity-50 disabled:shadow-none disabled:cursor-not-allowed text-sm rounded-md py-2 px-4 bg-transparent border-neutral-300 text-neutral-700 hover:bg-neutral-50"
+                        <Button
+                            color="primary"
+                            variant="outline"
+                            size="md"
                             onClick={() => window.location.reload()}
                         >
                             Recarregar Página
-                        </button>
+                        </Button>
 
-                        <button
-                            className="inline-flex border font-sans font-medium text-center transition-all duration-300 ease-in disabled:opacity-50 disabled:shadow-none disabled:cursor-not-allowed text-sm rounded-md py-2 px-4 bg-transparent border-neutral-300 text-neutral-700 hover:bg-neutral-50"
+                        <Button
+                            color="primary"
+                            variant="outline"
+                            size="md"
                             onClick={() => window.history.back()}
                         >
                             Voltar
-                        </button>
+                        </Button>
 
                         <Link href="/">
-                            <button className="inline-flex border font-sans font-medium text-center transition-all duration-300 ease-in disabled:opacity-50 disabled:shadow-none disabled:cursor-not-allowed text-sm rounded-md py-2 px-4 bg-transparent border-neutral-300 text-neutral-700 hover:bg-neutral-50">
-                                Ir para Início
-                            </button>
+                            <Button
+                                color="primary"
+                                variant="outline"
+                                size="md"
+                            >
+                                Ir para o Início
+                            </Button>
                         </Link>
                     </div>
                 </div>

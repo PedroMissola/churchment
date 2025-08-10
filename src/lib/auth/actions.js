@@ -1,5 +1,4 @@
 //src/lib/auth/actions.js
-
 'use server';
 
 import { z } from 'zod';
@@ -10,7 +9,6 @@ import {
 } from '@/lib/utils/validations';
 import { createClient } from '@/lib/supabase/server';
 import { headers } from 'next/headers';
-import { redirect } from 'next/navigation';
 
 // --- FUNÇÕES AUXILIARES ---
 
@@ -90,7 +88,8 @@ export async function signup(data) {
           last_name: lastName,
           full_name: `${firstName} ${lastName}`,
         },
-        emailRedirectTo: `${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/confirm?next=/dashboard&email=${encodeURIComponent(email)}`
+        // ✅ CORRIGIDO: URL correto para confirmação
+        emailRedirectTo: `${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/confirm?type=signup&next=/dashboard`
       },
     });
 
@@ -169,6 +168,7 @@ export async function resetPassword(data) {
     const supabase = await createClient();
 
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
+      // ✅ CORRIGIDO: URL correto para recovery
       redirectTo: `${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/confirm?type=recovery&next=/update-password`,
     });
 
@@ -271,7 +271,8 @@ export async function resendConfirmation(email) {
       type: 'signup',
       email,
       options: {
-        emailRedirectTo: `${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/confirm?next=/dashboard`,
+        // ✅ CORRIGIDO: URL correto
+        emailRedirectTo: `${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/confirm?type=signup&next=/dashboard`,
       },
     });
 

@@ -1,3 +1,4 @@
+// src/app/(auth)/verify-email/page.js
 'use client';
 
 import { Typography, Button, Spinner, Alert } from '@material-tailwind/react';
@@ -7,7 +8,6 @@ import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { resendConfirmation } from '@/lib/auth/actions';
 import AuthMessage from '@/components/auth/authmessage';
-import { Mail, CheckCircle, RefreshDouble } from 'iconoir-react';
 
 function VerifyEmailContent() {
   const [error, setError] = useState('');
@@ -58,7 +58,7 @@ function VerifyEmailContent() {
       <div className="bg-white rounded-lg border border-neutral-200 p-6 w-full max-w-md">
         <div className="space-y-8">
 
-          {/* Cabeçalho com ícone */}
+          {/* Cabeçalho */}
           <div className="space-y-2 text-center">
             <Typography
               type="h4"
@@ -67,58 +67,56 @@ function VerifyEmailContent() {
             >
               Verifique seu email
             </Typography>
-            <Typography className="text-neutral-600 text-sm">
-              Enviamos um link de verificação para:
+            <Typography className="text-neutral-600">
+              Enviamos um link de verificação para {email && (<Typography className="font-medium">{email}</Typography>
+              )}
             </Typography>
-            {email && (
-              <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 mt-4">
-                <Typography className="text-blue-800 font-medium text-sm break-all">
-                  {email}
-                </Typography>
-              </div>
-            )}
           </div>
-
-          <Suspense fallback={<div className="text-center text-neutral-400">Carregando...</div>}>
-            <AuthMessage />
-          </Suspense>
 
           {/* Mensagens personalizadas */}
           {successMessage && (
-            <div className="bg-green-50 border border-green-200 rounded-lg p-3">
-              <Typography type="small" className="text-green-800">
-                {successMessage}
-              </Typography>
-            </div>
+            <Alert color="success" variant="solid">
+              <Alert.Content>
+                <Typography type="small">
+                  {successMessage}
+                </Typography>
+              </Alert.Content>
+              <Alert.DismissTrigger />
+            </Alert>
           )}
 
           {infoMessage && (
-            <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
-              <Typography type="small" className="text-blue-800">
-                {infoMessage}
-              </Typography>
-            </div>
+            <Alert color="info" variant="solid">
+              <Alert.Content>
+                <Typography type="small">
+                  {infoMessage}
+                </Typography>
+              </Alert.Content>
+              <Alert.DismissTrigger />
+            </Alert>
           )}
 
           {/* Mensagem de erro */}
           {error && (
-            <div className="bg-red-50 border border-red-200 rounded-lg p-3">
-              <Typography type="small" className="text-red-800">
-                {error}
-              </Typography>
-            </div>
+            <Alert color="error" variant="solid">
+              <Alert.Content>
+                <Typography type="small">
+                  {error}
+                </Typography>
+              </Alert.Content>
+            </Alert>
           )}
 
           {/* Mensagem de sucesso */}
           {success && (
-            <div className="bg-green-50 border border-green-200 rounded-lg p-3">
-              <div className="flex items-center justify-center gap-2">
-                <CheckCircle className="h-4 w-4 text-green-600" />
-                <Typography type="small" className="text-green-800">
+            <Alert color="success" variant="solid">
+              <Alert.Content>
+                <Typography type="small">
                   {success}
                 </Typography>
-              </div>
-            </div>
+              </Alert.Content>
+              <Alert.DismissTrigger />
+            </Alert>
           )}
 
           {/* Instruções */}
@@ -144,15 +142,14 @@ function VerifyEmailContent() {
           </Alert>
 
           {/* Dica sobre spam */}
-          <Alert variant="ghost" color="warning">
-            <Alert.Content>
+          <Alert variant="ghost" color="info">
+            <Alert.Content className="mt-0.5">
               <Typography>Não encontrou o email?</Typography>
               <Typography type="small">
                 Verifique sua pasta de spam ou lixo eletrônico.
                 Às vezes emails de verificação podem ir parar lá.
               </Typography>
             </Alert.Content>
-            <Alert.DismissTrigger />
           </Alert>
 
           {/* Botão de Reenviar */}
@@ -161,8 +158,8 @@ function VerifyEmailContent() {
             disabled={isPending || countdown > 0 || !email}
             variant="outline"
             color="primary"
-            isFullWidth
             size="lg"
+            className="w-full"
           >
             {isPending ? (
               <div className="flex items-center justify-center gap-2">
@@ -170,24 +167,18 @@ function VerifyEmailContent() {
                 <span>Reenviando...</span>
               </div>
             ) : countdown > 0 ? (
-              <div className="flex items-center justify-center gap-2">
-                <RefreshDouble className="h-4 w-4" />
-                <span>Aguarde {countdown}s para reenviar</span>
-              </div>
+              <span>Aguarde {countdown}s para reenviar</span>
             ) : (
-              <div className="flex items-center justify-center gap-2">
-                <RefreshDouble className="h-4 w-4" />
-                <span>Reenviar email</span>
-              </div>
+              <span>Reenviar email</span>
             )}
           </Button>
 
           {!email && (
-            <Alert color="error">
+            <Alert variant="solid" color="error">
               <Alert.Content>
                 <Typography type="small">
                   Email não encontrado.{" "}
-                  <Link href="/register" className="hover:text-orange-50 font-semibold">
+                  <Link href="/register" className="hover:text-neutral-100 font-semibold">
                     Faça o registro novamente
                   </Link>
                 </Typography>

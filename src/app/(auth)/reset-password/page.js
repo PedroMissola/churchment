@@ -61,11 +61,13 @@ function ResetPasswordForm() {
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
       {/* Mensagem de Erro */}
       {error && (
-        <div className="bg-red-50 border border-red-200 rounded-lg p-3">
-          <Typography type="small" className="text-red-800">
-            {error}
-          </Typography>
-        </div>
+        <Alert color="error" variant="solid">
+          <Alert.Content>
+            <Typography type="small">
+              {error}
+            </Typography>
+          </Alert.Content>
+        </Alert>
       )}
 
       {/* Instruções */}
@@ -87,6 +89,7 @@ function ResetPasswordForm() {
             </Typography>
           </ul>
         </Alert.Content>
+        <Alert.DismissTrigger />
       </Alert>
 
       {/* Campo Email */}

@@ -13,7 +13,9 @@ export async function GET(request) {
 
     console.log('Auth confirm params:', { token_hash, token, type, email });
 
-    // Para recovery, precisamos do token_hash
+    const supabase = await createClient();
+
+    // RECOVERY usa token_hash e exchangeCodeForSession
     if (type === 'recovery') {
       if (!token_hash) {
         const redirectTo = new URL('/reset-password', origin);
@@ -21,9 +23,6 @@ export async function GET(request) {
         return NextResponse.redirect(redirectTo);
       }
 
-      const supabase = await createClient();
-
-      // Para recovery, usamos exchangeCodeForSession
       const { data, error } = await supabase.auth.exchangeCodeForSession(token_hash);
 
       if (error) {
@@ -48,7 +47,7 @@ export async function GET(request) {
       return NextResponse.redirect(redirectTo);
     }
 
-    // Para outros tipos (signup, email_change, etc.)
+    // SIGNUP, EMAIL_CHANGE etc. usam token e verifyOtp
     if (!token || !type || !email) {
       const redirectTo = new URL('/login', origin);
       redirectTo.searchParams.set('error', 'Link de confirmação inválido ou incompleto.');
@@ -62,9 +61,6 @@ export async function GET(request) {
       return NextResponse.redirect(redirectTo);
     }
 
-    const supabase = await createClient();
-
-    // Para signup e outros tipos, usamos verifyOtp
     const { data, error } = await supabase.auth.verifyOtp({
       type,
       token,

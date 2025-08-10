@@ -1,4 +1,5 @@
-'use client'
+// src/app/(auth)/reset-password-pending/page.js
+'use client';
 
 import { Typography, Button, Spinner, Alert } from '@material-tailwind/react';
 import { useState, useTransition, useEffect } from 'react';
@@ -7,16 +8,15 @@ import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { resetPassword } from '@/lib/auth/actions';
 import AuthMessage from '@/components/auth/authmessage';
-import { Clock, CheckCircle, RefreshDouble } from 'iconoir-react';
 
-function ResetPasswordPendingContent() {
+export default function ResetPasswordPendingPage() {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [isPending, startTransition] = useTransition();
   const [countdown, setCountdown] = useState(0);
   const router = useRouter();
   const searchParams = useSearchParams();
-  
+
   const email = searchParams.get('email') || '';
   const successMessage = searchParams.get('success') || '';
 
@@ -36,7 +36,7 @@ function ResetPasswordPendingContent() {
 
     setError('');
     setSuccess('');
-    
+
     startTransition(async () => {
       try {
         const result = await resetPassword({ email });
@@ -56,14 +56,9 @@ function ResetPasswordPendingContent() {
     <div className="flex min-h-screen items-center justify-center p-4">
       <div className="bg-white rounded-lg border border-neutral-200 p-6 w-full max-w-md">
         <div className="space-y-8">
-          
-          {/* Cabeçalho com ícone */}
+
+          {/* Cabeçalho */}
           <div className="space-y-2 text-center">
-            <div className="flex justify-center mb-4">
-              <div className="bg-orange-100 p-4 rounded-full">
-                <Clock className="h-12 w-12 text-orange-600" />
-              </div>
-            </div>
             <Typography
               type="h4"
               as="h1"
@@ -71,29 +66,22 @@ function ResetPasswordPendingContent() {
             >
               Link enviado!
             </Typography>
-            <Typography className="text-neutral-600 text-sm">
-              Enviamos um link de recuperação para:
+            <Typography className="text-neutral-600" type="p">
+              Enviamos um link de recuperação para {email && (<Typography type="p" className="text-neutral-600 font-medium" as="span">{email}</Typography>
+              )}
             </Typography>
-            {email && (
-              <div className="bg-orange-50 border border-orange-200 rounded-lg p-3 mt-4">
-                <Typography className="text-orange-800 font-medium text-sm break-all">
-                  {email}
-                </Typography>
-              </div>
-            )}
           </div>
-
-          <Suspense fallback={<div className="text-center text-neutral-400">Carregando...</div>}>
-            <AuthMessage />
-          </Suspense>
 
           {/* Mensagem de sucesso personalizada */}
           {successMessage && (
-            <div className="bg-green-50 border border-green-200 rounded-lg p-3">
-              <Typography type="small" className="text-green-800">
-                {successMessage}
-              </Typography>
-            </div>
+            <Alert color="success" variant="solid">
+              <Alert.Content>
+                <Typography type="small">
+                  {successMessage}
+                </Typography>
+              </Alert.Content>
+              <Alert.DismissTrigger />
+            </Alert>
           )}
 
           {/* Mensagem de erro */}
@@ -108,12 +96,9 @@ function ResetPasswordPendingContent() {
           {/* Mensagem de sucesso */}
           {success && (
             <div className="bg-green-50 border border-green-200 rounded-lg p-3">
-              <div className="flex items-center justify-center gap-2">
-                <CheckCircle className="h-4 w-4 text-green-600" />
-                <Typography type="small" className="text-green-800">
-                  {success}
-                </Typography>
-              </div>
+              <Typography type="small" className="text-green-800">
+                {success}
+              </Typography>
             </div>
           )}
 
@@ -136,14 +121,15 @@ function ResetPasswordPendingContent() {
                 </Typography>
               </ul>
             </Alert.Content>
+            <Alert.DismissTrigger />
           </Alert>
 
           {/* Aviso de expiração */}
-          <Alert variant="ghost" className="bg-amber-50 border-amber-200">
+          <Alert variant="ghost" color="warning">
             <Alert.Content className="mt-0.5">
-              <Typography className="text-amber-800">Link expira em 1 hora</Typography>
-              <Typography type="small" className="text-amber-700 mt-1">
-                Por segurança, o link de recuperação expira automaticamente. 
+              <Typography type="p">Link expira em 1 hora</Typography>
+              <Typography type="small">
+                Por segurança, o link de recuperação expira automaticamente.
                 Se não conseguir usá-lo a tempo, solicite um novo.
               </Typography>
             </Alert.Content>
@@ -155,8 +141,8 @@ function ResetPasswordPendingContent() {
             disabled={isPending || countdown > 0 || !email}
             variant="outline"
             color="primary"
-            isFullWidth
             size="lg"
+            className="w-full"
           >
             {isPending ? (
               <div className="flex items-center justify-center gap-2">
@@ -164,27 +150,23 @@ function ResetPasswordPendingContent() {
                 <span>Enviando novo link...</span>
               </div>
             ) : countdown > 0 ? (
-              <div className="flex items-center justify-center gap-2">
-                <RefreshDouble className="h-4 w-4" />
-                <span>Aguarde {Math.floor(countdown / 60)}:{(countdown % 60).toString().padStart(2, '0')} para reenviar</span>
-              </div>
+              <span>Aguarde {Math.floor(countdown / 60)}:{(countdown % 60).toString().padStart(2, '0')} para reenviar</span>
             ) : (
-              <div className="flex items-center justify-center gap-2">
-                <RefreshDouble className="h-4 w-4" />
-                <span>Enviar novo link</span>
-              </div>
+              <span>Enviar novo link</span>
             )}
           </Button>
 
           {!email && (
-            <div className="bg-red-50 border border-red-200 rounded-lg p-3">
-              <Typography type="small" className="text-red-800">
-                Email não encontrado. 
-                <Link href="/reset-password" className="text-orange-500 hover:text-orange-600 font-medium ml-1">
-                  Tente novamente
-                </Link>
-              </Typography>
-            </div>
+            <Alert variant="solid" color="error">
+              <Alert.Content>
+                <Typography type="small">
+                  Email não encontrado. {" "}
+                  <Link href="/reset-password" className="hover:text-neutral-100 font-semibold">
+                    Tente novamente
+                  </Link>
+                </Typography>
+              </Alert.Content>
+            </Alert>
           )}
 
           {/* Rodapé */}

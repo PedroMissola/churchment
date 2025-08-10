@@ -1,20 +1,19 @@
 // src/app/(auth)/update-password-pending/page.js
 'use client';
 
-import { Typography, Button } from '@material-tailwind/react';
+import { Typography, Button, Alert } from '@material-tailwind/react';
 import { useEffect, useState } from 'react';
 import { Suspense } from 'react';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import AuthMessage from '@/components/auth/authmessage';
-import { CheckCircle, Clock, ArrowRight } from 'iconoir-react';
 
-function UpdatePasswordPendingContent() {
+export default function UpdatePasswordPendingPage() {
   const [countdown, setCountdown] = useState(5);
   const router = useRouter();
   const searchParams = useSearchParams();
-  
-  const successMessage = searchParams.get('success') || 'Senha atualizada com sucesso!';
+
+  const successMessage = searchParams.get('success') || '';
 
   // Countdown para redirecionamento automático
   useEffect(() => {
@@ -27,23 +26,16 @@ function UpdatePasswordPendingContent() {
   }, [countdown, router]);
 
   return (
-    <div className="flex min-h-screen items-center justify-center">
-      <div className="bg-white rounded-lg border border-neutral-200 p-6 w-full max-w-md mx-auto">
-        
-        <div className="space-y-6 text-center">
-          
-          {/* Ícone de Sucesso */}
-          <div className="flex justify-center">
-            <div className="bg-green-100 p-4 rounded-full">
-              <CheckCircle className="h-12 w-12 text-green-600" />
-            </div>
-          </div>
-          
-          {/* Header */}
-          <div className="space-y-2">
+    <div className="flex min-h-screen items-center justify-center p-4">
+      <div className="bg-white rounded-lg border border-neutral-200 p-6 w-full max-w-md">
+        <div className="space-y-8">
+
+          {/* Cabeçalho */}
+          <div className="space-y-2 text-center">
             <Typography
-              type="h1"
-              className="text-neutral-900 font-semibold text-xl"
+              type="h4"
+              as="h1"
+              className="text-neutral-900"
             >
               Senha atualizada!
             </Typography>
@@ -52,101 +44,86 @@ function UpdatePasswordPendingContent() {
             </Typography>
           </div>
 
-          {/* Mensagens da URL */}
-          <Suspense fallback={null}>
-            <AuthMessage />
-          </Suspense>
-
           {/* Mensagem de sucesso personalizada */}
           {successMessage && (
-            <div className="bg-green-50 border border-green-200 rounded-lg p-3">
-              <Typography type="small" className="text-green-800">
-                {successMessage}
-              </Typography>
-            </div>
+            <Alert color="success" variant="solid">
+              <Alert.Content>
+                <Typography type="small">
+                  {successMessage}
+                </Typography>
+              </Alert.Content>
+              <Alert.DismissTrigger />
+            </Alert>
           )}
 
           {/* Contador de redirecionamento */}
-          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-            <div className="flex items-center justify-center gap-3">
-              <Clock className="h-5 w-5 text-blue-600" />
-              <div>
-                <Typography type="small" className="text-blue-800 font-medium">
-                  Redirecionando em {countdown} segundos
-                </Typography>
-                <Typography type="small" className="text-blue-700 mt-1">
-                  Você será levado para a página de login automaticamente
-                </Typography>
-              </div>
-            </div>
-          </div>
+          <Alert variant="ghost" color="info">
+            <Alert.Content>
+              <Typography>Redirecionando em {countdown} segundos</Typography>
+              <Typography type="small">
+                Você será levado para a página de login automaticamente
+              </Typography>
+            </Alert.Content>
+          </Alert>
 
           {/* Dicas de segurança */}
-          <div className="bg-neutral-50 border border-neutral-200 rounded-lg p-4 text-left">
-            <Typography type="small" className="text-neutral-800 font-medium">
-              🔐 Dicas importantes:
-            </Typography>
-            <Typography type="small" className="text-neutral-700 mt-1">
-              <br />
-              • Sua nova senha está ativa imediatamente
-              <br />
-              • Use apenas dispositivos confiáveis para fazer login
-              <br />
-              • Não compartilhe sua senha com ninguém
-              <br />
-              • Considere usar um gerenciador de senhas
-            </Typography>
-          </div>
+          <Alert variant="ghost">
+            <Alert.Content className="mt-0.5">
+              <Typography>Dicas de segurança</Typography>
+              <ul className="ml-2 mt-2 list-inside list-disc space-y-1">
+                <Typography as="li" type="small" className="list-item">
+                  Sua nova senha está ativa imediatamente
+                </Typography>
+                <Typography as="li" type="small" className="list-item">
+                  Use apenas dispositivos confiáveis para fazer login
+                </Typography>
+                <Typography as="li" type="small" className="list-item">
+                  Não compartilhe sua senha com ninguém
+                </Typography>
+                <Typography as="li" type="small" className="list-item">
+                  Considere usar um gerenciador de senhas
+                </Typography>
+              </ul>
+            </Alert.Content>
+          </Alert>
 
           {/* Botão de ação manual */}
-          <div className="space-y-3">
-            <Button
-              onClick={() => router.push('/login')}
-              className="w-full bg-orange-500 hover:bg-orange-600 text-white font-medium py-3 px-4 rounded-lg transition-colors duration-200"
-            >
-              <div className="flex items-center justify-center gap-2">
-                <span>IR PARA LOGIN AGORA</span>
-                <ArrowRight className="h-4 w-4" />
-              </div>
-            </Button>
+          <Button
+            onClick={() => router.push('/login')}
+            variant="solid"
+            color="primary"
+            size="lg"
+            className="w-full"
+          >
+            IR PARA LOGIN AGORA
+          </Button>
 
-            <Typography type="small" className="text-neutral-500">
+          {/* Rodapé */}
+          <div className="text-center space-y-3">
+            <Typography className="text-neutral-600 text-sm">
               Ou aguarde o redirecionamento automático
             </Typography>
-          </div>
 
-          {/* Links alternativos */}
-          <div className="pt-4 space-y-2">
             <Typography className="text-neutral-600 text-sm">
               Precisa de ajuda?{' '}
               <Link
                 href="/support"
-                className="text-orange-500 hover:text-orange-600 font-medium transition-colors duration-200"
+                className="text-orange-500 hover:text-orange-600 font-medium transition-colors"
               >
                 Entre em contato
               </Link>
             </Typography>
-            
-            <Typography className="text-neutral-600 text-sm">
-              <Link
-                href="/"
-                className="text-orange-500 hover:text-orange-600 font-medium transition-colors duration-200"
-              >
-                ← Voltar para o início
-              </Link>
-            </Typography>
+
+            <Link
+              href="/"
+              className="text-neutral-600 text-sm font-medium hover:text-neutral-800 transition-colors"
+            >
+              Voltar para o início
+            </Link>
           </div>
 
         </div>
       </div>
     </div>
-  );
-}
-
-export default function UpdatePasswordPendingPage() {
-  return (
-    <Suspense fallback={<div className="flex min-h-screen items-center justify-center">Carregando...</div>}>
-      <UpdatePasswordPendingContent />
-    </Suspense>
   );
 }
